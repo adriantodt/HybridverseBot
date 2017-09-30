@@ -1,0 +1,120 @@
+/* HBDVBOT's build.gradle */
+
+//Imports
+import org.apache.tools.ant.filters.ReplaceTokens
+
+
+//Plugins
+plugins {
+	//Compiles Java
+	id 'java'
+	//Adds an Executable Manifest
+	id 'application'
+	//Creates FatJars
+	id 'com.github.johnrengelman.shadow' version '1.2.4'
+	//Checks for RestActions
+	id 'com.sedmelluq.jdaction' version '1.0.1'
+}
+
+//Define the Main Class
+mainClassName = "com.theorangehub.hbdvbot.HBDVBOT"
+
+//Use an unified versioning system
+def ver = new Version(major: 1, minor: 11, revision: 0)
+version ver.toString()
+
+//We are going to use Java 8
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenLocal()
+	jcenter()
+}
+
+dependencies {
+	compile 'net.dv8tion:JDA:3.3.0_262'
+
+	compile 'org.reflections:reflections:0.9.10'
+	compile 'ch.qos.logback:logback-classic:0.9.26'
+
+	compile 'org.apache-extras.beanshell:bsh:2.0b6'
+
+	compile 'br.com.brjdevs:utils:1.0.0_14'
+	compile 'br.com.brjdevs:snowflakes:1.0.0_2'
+
+	compile 'com.google.guava:guava:19.0'
+	compile 'com.google.code.gson:gson:2.8.0'
+
+    compile 'us.monoid.web:resty:0.3.2'
+	compile 'org.apache.commons:commons-lang3:3.5'
+
+	compile 'com.fasterxml.jackson.core:jackson-databind:2.9.0.pr1'
+	compile 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.9.0.pr1'
+
+	compile ('com.rethinkdb:rethinkdb-driver:2.3.3') {
+		exclude group: 'junit', module: 'junit'
+	}
+
+	compileOnly "org.projectlombok:lombok:1.16.16"
+}
+
+task wrapper(type: Wrapper) {
+	gradleVersion = '3.2'
+}
+
+task clearPrepared(type: Delete) {
+	delete 'build/prepared-src'
+}
+
+//Task for the versioning system
+task prepareSource(type: Copy) {
+	from 'src/main/java'
+	into 'build/prepared-src'
+	filter(ReplaceTokens, tokens: [
+		version: ver.toString()
+	])
+}
+prepareSource.dependsOn clearPrepared
+
+compileJava {
+	source = prepareSource.destinationDir
+	classpath = sourceSets.main.compileClasspath
+	dependsOn prepareSource
+}
+
+tasks.withType(JavaCompile) {
+	options.encoding = 'UTF-8'
+}
+
+build.dependsOn shadowJar
+
+artifacts {
+	archives shadowJar
+}
+
+task cleanDistTar(type: Delete) { delete files(distTar) }
+distTar { classifier = "trash" }
+distTar.finalizedBy cleanDistTar
+
+task cleanDistZip(type: Delete) { delete files(distZip) }
+distZip { classifier = "trash" }
+distZip.finalizedBy cleanDistZip
+
+task cleanShittyJar(type: Delete) { delete files(jar) }
+jar { classifier = "trash" }
+jar.finalizedBy cleanShittyJar
+
+shadowJar { classifier = "" }
+
+class Version {
+	String major, minor, revision
+
+	static String getBuild() {
+		System.getenv("BUILD_NUMBER") ?: System.getProperty("BUILD_NUMBER") ?: "D" + new Date().format('ddMMyyyy')
+	}
+
+	String toString() {
+		"${major}.${minor}.${revision}_$build"
+	}
+}
