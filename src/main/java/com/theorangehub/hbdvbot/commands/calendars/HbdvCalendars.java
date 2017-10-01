@@ -1,8 +1,8 @@
-package com.theorangehub.hbdvbot.commands.datas;
+package com.theorangehub.hbdvbot.commands.calendars;
 
-import com.theorangehub.hbdvbot.commands.datas.calendars.AfterPlagueCalendar;
-import com.theorangehub.hbdvbot.commands.datas.calendars.ApexCalendar;
-import com.theorangehub.hbdvbot.commands.datas.calendars.RealLifeEquivalentCalendar;
+import com.theorangehub.hbdvbot.commands.calendars.impl.AfterPlagueCalendar;
+import com.theorangehub.hbdvbot.commands.calendars.impl.ApexCalendar;
+import com.theorangehub.hbdvbot.commands.calendars.impl.RealLifeEquivalentCalendar;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

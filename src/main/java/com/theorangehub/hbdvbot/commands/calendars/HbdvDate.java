@@ -1,4 +1,4 @@
-package com.theorangehub.hbdvbot.commands.datas;
+package com.theorangehub.hbdvbot.commands.calendars;
 
 import java.time.LocalDate;
 import java.util.Objects;

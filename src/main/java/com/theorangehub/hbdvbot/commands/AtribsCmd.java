@@ -2,7 +2,8 @@ package com.theorangehub.hbdvbot.commands;
 
 import br.com.brjdevs.java.utils.extensions.StreamUtils;
 import br.com.brjdevs.java.utils.strings.StringUtils;
-import com.theorangehub.hbdvbot.HBDVBOT;
+import com.rethinkdb.net.Cursor;
+import com.theorangehub.hbdvbot.HbdvBot;
 import com.theorangehub.hbdvbot.commands.atrib.Atributo;
 import com.theorangehub.hbdvbot.data.HbdvData;
 import com.theorangehub.hbdvbot.data.entities.Ficha;
@@ -14,7 +15,6 @@ import com.theorangehub.hbdvbot.modules.commands.SimpleCommand;
 import com.theorangehub.hbdvbot.utils.DiscordUtils;
 import com.theorangehub.hbdvbot.utils.HbdvUtils;
 import com.theorangehub.hbdvbot.utils.commands.EmoteReference;
-import com.rethinkdb.net.Cursor;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.User;
@@ -26,8 +26,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.StringJoiner;
 
-import static com.theorangehub.hbdvbot.commands.ficha.FichaEmbeds.defaultColor;
 import static com.rethinkdb.RethinkDB.r;
+import static com.theorangehub.hbdvbot.commands.ficha.FichaEmbeds.defaultColor;
 
 @Module
 public class AtribsCmd {
@@ -46,7 +46,7 @@ public class AtribsCmd {
                 .setAuthor(
                     "Ficha: " + ficha.getNome(),
                     null,
-                    HBDVBOT.getInstance().getSelfUser().getEffectiveAvatarUrl()
+                    HbdvBot.getInstance().getSelfUser().getEffectiveAvatarUrl()
                 )
                 .setThumbnail(ficha.getAvatar())
                 .setDescription(
@@ -57,7 +57,7 @@ public class AtribsCmd {
                 .setColor(ficha.getCor() != null ? Color.decode(ficha.getCor()) : defaultColor)
                 .setFooter(
                     "ID: " + ficha.getId() + " / Criado por: " + ficha.getNomeCriador(),
-                    Optional.ofNullable(HBDVBOT.getInstance().getUserById(ficha.getCriador()))
+                    Optional.ofNullable(HbdvBot.getInstance().getUserById(ficha.getCriador()))
                         .map(User::getEffectiveAvatarUrl)
                         .orElse(null)
                 ).build();

@@ -1,5 +1,7 @@
 package com.theorangehub.hbdvbot.modules.commands.base;
 
+import com.theorangehub.hbdvbot.commands.ficha.FichaEmbeds;
+import com.theorangehub.hbdvbot.commands.help.HelpBuilder;
 import com.theorangehub.hbdvbot.utils.CommandUtils;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
@@ -16,10 +18,12 @@ public interface AssistedCommand extends Command {
         return CommandUtils.baseEmbed(event, name, image);
     }
 
+    default HelpBuilder helpBuilder(GuildMessageReceivedEvent event, String name) {
+        return new HelpBuilder(event, name, permission()).cor(FichaEmbeds.defaultColor);
+    }
+
     default EmbedBuilder helpEmbed(GuildMessageReceivedEvent event, String name) {
-        return baseEmbed(event, name)
-            .setThumbnail("https://cdn.pixabay.com/photo/2012/04/14/16/26/question-34499_960_720.png")
-            .addField("Permissão Requerida", permission().toString(), true);
+        return CommandUtils.helpEmbed(event, name, permission());
     }
 
     default void onHelp(GuildMessageReceivedEvent event) {

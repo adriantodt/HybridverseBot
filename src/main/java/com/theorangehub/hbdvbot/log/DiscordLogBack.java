@@ -4,7 +4,7 @@ import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.PatternLayout;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.AppenderBase;
-import com.theorangehub.hbdvbot.HBDVBOT;
+import com.theorangehub.hbdvbot.HbdvBot;
 import com.theorangehub.hbdvbot.data.HbdvData;
 import lombok.SneakyThrows;
 import net.dv8tion.jda.core.MessageBuilder;
@@ -49,7 +49,7 @@ public class DiscordLogBack extends AppenderBase<ILoggingEvent> {
     }
 
     public static void enable() {
-        instance.startThread(HBDVBOT.getInstance().getTextChannelById(HbdvData.config().get().consoleChannel));
+        instance.startThread(HbdvBot.getInstance().getTextChannelById(HbdvData.config().get().consoleChannel));
     }
 
     public static void disable() {

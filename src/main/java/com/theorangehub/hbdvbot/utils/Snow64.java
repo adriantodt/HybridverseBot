@@ -5,17 +5,15 @@ import java.util.Base64;
 public class Snow64 {
     public static long fromSnow64(String snow64) {
         return fromByteArray(
-            Base64.getDecoder().decode(
-                snow64.replace('-', '/')
+            Base64.getUrlDecoder().decode(
+                snow64.replace('-', '_')
             )
         );
     }
 
     public static String toSnow64(long snowflake) {
-        return Base64.getEncoder().encodeToString(toByteArray(snowflake))
-            .replace('/', '-')
-            .replace('=', ' ')
-            .trim();
+        return Base64.getUrlEncoder().withoutPadding().encodeToString(toByteArray(snowflake))
+            .replace('_', '-');
     }
 
     /*

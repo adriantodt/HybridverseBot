@@ -72,7 +72,8 @@ task prepareSource(type: Copy) {
 	from 'src/main/java'
 	into 'build/prepared-src'
 	filter(ReplaceTokens, tokens: [
-		version: ver.toString()
+		"false": "true",
+		"version": ver.toString()
 	])
 }
 prepareSource.dependsOn clearPrepared

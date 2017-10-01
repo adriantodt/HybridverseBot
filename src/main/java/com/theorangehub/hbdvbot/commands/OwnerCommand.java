@@ -1,6 +1,8 @@
 package com.theorangehub.hbdvbot.commands;
 
-import com.theorangehub.hbdvbot.HBDVBOT;
+import bsh.Interpreter;
+import com.rethinkdb.RethinkDB;
+import com.theorangehub.hbdvbot.HbdvBot;
 import com.theorangehub.hbdvbot.data.HbdvData;
 import com.theorangehub.hbdvbot.modules.CommandRegistry;
 import com.theorangehub.hbdvbot.modules.Event;
@@ -8,8 +10,6 @@ import com.theorangehub.hbdvbot.modules.Module;
 import com.theorangehub.hbdvbot.modules.commands.CommandPermission;
 import com.theorangehub.hbdvbot.modules.commands.SimpleCommand;
 import com.theorangehub.hbdvbot.utils.HbdvUtils;
-import bsh.Interpreter;
-import com.rethinkdb.RethinkDB;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
@@ -43,7 +43,7 @@ public class OwnerCommand {
         Map<String, Evaluator> evals = new HashMap<>();
         evals.put("js", (event, code) -> {
             ScriptEngine script = new ScriptEngineManager().getEngineByName("nashorn");
-            script.put("bot", HBDVBOT.getInstance());
+            script.put("bot", HbdvBot.getInstance());
             script.put("db", HbdvData.db());
             script.put("jda", event.getJDA());
             script.put("event", event);
@@ -72,7 +72,7 @@ public class OwnerCommand {
         evals.put("bsh", (event, code) -> {
             Interpreter interpreter = new Interpreter();
             try {
-                interpreter.set("bot", HBDVBOT.getInstance());
+                interpreter.set("bot", HbdvBot.getInstance());
                 interpreter.set("db", HbdvData.db());
                 interpreter.set("jda", event.getJDA());
                 interpreter.set("event", event);

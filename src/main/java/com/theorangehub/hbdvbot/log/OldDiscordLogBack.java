@@ -4,7 +4,7 @@ import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.PatternLayout;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.AppenderBase;
-import com.theorangehub.hbdvbot.HBDVBOT;
+import com.theorangehub.hbdvbot.HbdvBot;
 import com.theorangehub.hbdvbot.data.HbdvData;
 import com.theorangehub.hbdvbot.utils.HbdvUtils;
 import net.dv8tion.jda.core.entities.TextChannel;
@@ -23,7 +23,7 @@ public class OldDiscordLogBack extends AppenderBase<ILoggingEvent> {
     }
 
     private static TextChannel consoleChannel() {
-        return HBDVBOT.getInstance().getTextChannelById(HbdvData.config().get().consoleChannel);
+        return HbdvBot.getInstance().getTextChannelById(HbdvData.config().get().consoleChannel);
     }
 
     private PatternLayout patternLayout;

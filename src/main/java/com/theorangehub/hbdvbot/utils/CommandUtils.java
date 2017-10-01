@@ -1,5 +1,6 @@
 package com.theorangehub.hbdvbot.utils;
 
+import com.theorangehub.hbdvbot.modules.commands.CommandPermission;
 import com.theorangehub.hbdvbot.modules.commands.base.Command;
 import com.theorangehub.hbdvbot.utils.commands.EmoteReference;
 import net.dv8tion.jda.core.EmbedBuilder;
@@ -20,6 +21,12 @@ public class CommandUtils {
             .setFooter("Requerido por " + event.getMember().getEffectiveName(), event.getAuthor().getEffectiveAvatarUrl());
     }
 
+    public static EmbedBuilder helpEmbed(GuildMessageReceivedEvent event, String name, CommandPermission permission) {
+        return baseEmbed(event, name)
+            .setThumbnail("https://cdn.pixabay.com/photo/2012/04/14/16/26/question-34499_960_720.png")
+            .addField("Permissão Requerida", permission.toString(), true);
+    }
+
     public static void doTimes(int times, Runnable runnable) {
         for (int i = 0; i < times; i++) runnable.run();
     }
@@ -30,6 +37,7 @@ public class CommandUtils {
                 .queue(message -> message.delete().queueAfter(30, TimeUnit.SECONDS));
             return;
         }
+
         MessageEmbed helpEmbed = command.help(event);
 
         if (helpEmbed == null) {

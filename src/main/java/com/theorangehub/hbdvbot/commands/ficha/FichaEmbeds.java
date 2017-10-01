@@ -1,6 +1,6 @@
 package com.theorangehub.hbdvbot.commands.ficha;
 
-import com.theorangehub.hbdvbot.HBDVBOT;
+import com.theorangehub.hbdvbot.HbdvBot;
 import com.theorangehub.hbdvbot.data.entities.Ficha;
 import com.theorangehub.hbdvbot.data.entities.helper.Rank;
 import com.theorangehub.hbdvbot.data.entities.helper.RankCategory;
@@ -59,13 +59,13 @@ public class FichaEmbeds {
             .setAuthor(
                 "Ficha: " + ficha.getNome(),
                 null,
-                HBDVBOT.getInstance().getSelfUser().getEffectiveAvatarUrl()
+                HbdvBot.getInstance().getSelfUser().getEffectiveAvatarUrl()
             )
             .setThumbnail(ficha.getAvatar())
             .setColor(ficha.getCor() != null ? Color.decode(ficha.getCor()) : defaultColor)
             .setFooter(
                 "ID: " + ficha.getId() + " / Criado por: " + ficha.getNomeCriador(),
-                Optional.ofNullable(HBDVBOT.getInstance().getUserById(ficha.getCriador()))
+                Optional.ofNullable(HbdvBot.getInstance().getUserById(ficha.getCriador()))
                     .map(User::getEffectiveAvatarUrl)
                     .orElse(null)
             );
@@ -98,7 +98,7 @@ public class FichaEmbeds {
             .setAuthor(
                 ficha.getNome() + ": História",
                 null,
-                HBDVBOT.getInstance().getSelfUser().getEffectiveAvatarUrl()
+                HbdvBot.getInstance().getSelfUser().getEffectiveAvatarUrl()
             )
             .setDescription(ficha.getHistória())
             .addField(

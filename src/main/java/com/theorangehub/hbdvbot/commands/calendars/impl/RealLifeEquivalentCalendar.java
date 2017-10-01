@@ -1,7 +1,7 @@
-package com.theorangehub.hbdvbot.commands.datas.calendars;
+package com.theorangehub.hbdvbot.commands.calendars.impl;
 
-import com.theorangehub.hbdvbot.commands.datas.HbdvCalendar;
-import com.theorangehub.hbdvbot.commands.datas.HbdvDate;
+import com.theorangehub.hbdvbot.commands.calendars.HbdvCalendar;
+import com.theorangehub.hbdvbot.commands.calendars.HbdvDate;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;

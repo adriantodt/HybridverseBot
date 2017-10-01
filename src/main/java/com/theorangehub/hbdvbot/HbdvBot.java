@@ -4,8 +4,8 @@ import br.com.brjdevs.java.utils.extensions.Async;
 import com.theorangehub.hbdvbot.core.listeners.command.CommandListener;
 import com.theorangehub.hbdvbot.core.listeners.operations.InteractiveOperation;
 import com.theorangehub.hbdvbot.core.listeners.operations.ReactionOperation;
-import com.theorangehub.hbdvbot.data.HbdvData;
 import com.theorangehub.hbdvbot.data.Config;
+import com.theorangehub.hbdvbot.data.HbdvData;
 import com.theorangehub.hbdvbot.log.DiscordLogBack;
 import com.theorangehub.hbdvbot.log.SimpleLogToSLF4JAdapter;
 import com.theorangehub.hbdvbot.modules.CommandRegistry;
@@ -29,8 +29,9 @@ import org.reflections.scanners.SubTypesScanner;
 import org.reflections.scanners.TypeAnnotationsScanner;
 
 import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
@@ -38,25 +39,34 @@ import java.util.concurrent.TimeUnit;
 import static br.com.brjdevs.java.utils.extensions.CollectionUtils.random;
 
 @Slf4j
-public class HBDVBOT implements JDA {
+public class HbdvBot implements JDA {
     public static final DataManager<List<String>> SPLASHES = new SimpleFileDataManager("assets/splashes.txt");
-    public static final String VERSION = "@version@";
-    private static final Random RANDOM = new Random();
-
     @Getter
-    private static HBDVBOT instance;
+    private static HbdvBot instance;
 
     public static CommandRegistry getRegistry() {
         return CommandListener.PROCESSOR;
     }
 
+    public static String getVersion() {
+        if (isDevBuild()) {
+            return "DEV" + new SimpleDateFormat("ddMMyyyy").format(new Date());
+        }
+
+        return "@version@";
+    }
+
+    public static boolean isDevBuild() {
+        return Boolean.parseBoolean("@false@".replace("@", ""));
+    }
+
     public static void main(String[] args) {
         try {
-            new HBDVBOT();
+            new HbdvBot();
         } catch (Exception e) {
             DiscordLogBack.disable();
-            log.error("Could not complete Main Thread routine!", e);
-            log.error("Cannot continue! Exiting program...");
+            log.error("Erro durante inicialização!", e);
+            log.error("Não é possível continuar, desligando...");
             System.exit(-1);
         }
     }
@@ -65,11 +75,11 @@ public class HBDVBOT implements JDA {
     @Getter
     private JDA jda;
 
-    private HBDVBOT() throws Exception {
+    private HbdvBot() throws Exception {
         instance = this;
 
         SimpleLogToSLF4JAdapter.install();
-        log.info("HybridverseBot starting...");
+        log.info("HbdvBot iniciando...");
 
         Config config = HbdvData.config().get();
 
@@ -87,17 +97,18 @@ public class HBDVBOT implements JDA {
             .setToken(config.token)
             .setAutoReconnect(true)
             .setCorePoolSize(5)
-            .setGame(Game.of("Hold on to your seatbelts!"))
+            .setGame(Game.of("Abrindo o portão mágico..."))
             .buildBlocking();
 
         DiscordLogBack.enable();
-        log.info("[-=-=-=-=-=- HBDVBOT STARTED -=-=-=-=-=-]");
-        log.info("Started bot instance.");
-        log.info("Started HybridverseBot " + VERSION + " on JDA " + JDAInfo.VERSION);
+        log.info("[-=-=-=-=-=- HBDVBOT INICIADO -=-=-=-=-=-]");
+        log.info("HbdvBot v" + getVersion() + " (JDA " + JDAInfo.VERSION + ") iniciado.");
+
+        log.info("[-=-=-=-=-=- INICIALIZAÇÃO  1 -=-=-=-=-=-]");
 
         Async.task("Splash Thread",
             () -> {
-                String newStatus = random(SPLASHES.get(), RANDOM);
+                String newStatus = random(SPLASHES.get(), HbdvCommons.RANDOM);
 
                 jda.getPresence().setGame(Game.of(config.prefix + "help | " + newStatus));
                 log.debug("Changed status to: " + newStatus);
@@ -113,7 +124,8 @@ public class HBDVBOT implements JDA {
 
         EventDispatcher.dispatch(events, getRegistry());
 
-        log.info("Finished loading.");
+        log.info("Finalizada.");
+        log.info("[-=-=-=-=-=- INICIALIZAÇÃO  2 -=-=-=-=-=-]");
 
         EventDispatcher.dispatch(events, new PostLoadEvent());
 
@@ -123,7 +135,7 @@ public class HBDVBOT implements JDA {
             ReactionOperation.listener()
         );
 
-        log.info("Loaded " + CommandListener.PROCESSOR.commands().size() + " commands.");
+        log.info("Finalizada. {} comandos carregados.", CommandListener.PROCESSOR.commands().size());
 
         //Free Instances
         EventDispatcher.instances.clear();

@@ -1,7 +1,8 @@
 package com.theorangehub.hbdvbot.commands;
 
 import br.com.brjdevs.java.utils.extensions.CollectionUtils;
-import com.theorangehub.hbdvbot.HBDVBOT;
+import com.theorangehub.hbdvbot.HbdvBot;
+import com.theorangehub.hbdvbot.commands.info.AsyncInfoMonitor;
 import com.theorangehub.hbdvbot.commands.info.CommandStatsManager;
 import com.theorangehub.hbdvbot.core.CommandProcessorAndRegistry;
 import com.theorangehub.hbdvbot.modules.CommandRegistry;
@@ -12,52 +13,53 @@ import com.theorangehub.hbdvbot.modules.commands.base.Command;
 import com.theorangehub.hbdvbot.modules.events.PostLoadEvent;
 import com.theorangehub.hbdvbot.utils.CommandUtils;
 import com.theorangehub.hbdvbot.utils.commands.EmoteReference;
-import com.theorangehub.hbdvbot.commands.info.AsyncInfoMonitor;
 import net.dv8tion.jda.core.OnlineStatus;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 
-import java.awt.Color;
 import java.lang.management.ManagementFactory;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.Random;
+import java.util.stream.Collectors;
 
+import static com.theorangehub.hbdvbot.HbdvCommons.RANDOM;
 import static java.lang.String.format;
-import static java.lang.String.join;
 
 @Module
 public class InfoCmds {
+    public static final List<String> HELP_JOKES = Arrays.asList(
+        "Parabéns, você descobriu como usar o comando de ajuda!",
+        "Te ajuda a se ajudar."
+    );
 
     @Event
     public static void about(CommandRegistry registry) {
         registry.register("sobre", new SimpleCommand() {
             @Override
             protected void call(GuildMessageReceivedEvent event, String content, String[] args) {
-                List<Guild> guilds = HBDVBOT.getInstance().getGuilds();
+                List<Guild> guilds = HbdvBot.getInstance().getGuilds();
                 int guildCount = guilds.size();
-                int usersCount = HBDVBOT.getInstance().getUsers().size();
+                int usersCount = HbdvBot.getInstance().getUsers().size();
                 long onlineCount = guilds.stream()
                     .flatMap(guild -> guild.getMembers().stream())
                     .filter(user -> !user.getOnlineStatus().equals(OnlineStatus.OFFLINE))
                     .map(member -> member.getUser().getId())
                     .distinct()
                     .count();
-                int tcCount = HBDVBOT.getInstance().getTextChannels().size();
-                int vcCount = HBDVBOT.getInstance().getVoiceChannels().size();
+                int tcCount = HbdvBot.getInstance().getTextChannels().size();
+                int vcCount = HbdvBot.getInstance().getVoiceChannels().size();
                 long millis = ManagementFactory.getRuntimeMXBean().getUptime();
                 long seconds = millis / 1000;
                 long minutes = seconds / 60;
                 long hours = minutes / 60;
                 long days = hours / 24;
 
-                event.getChannel().sendMessage(baseEmbed(event, "Sobre o HybridverseBot")
-                    .setDescription("Bot para Consulta de Informações do RPG")
+                event.getChannel().sendMessage(baseEmbed(event, "Sobre o Hbdv")
+                    .setDescription("Bot para Consulta de Informações do #HBDVRPG")
                     .addField(
                         "Informação:",
-                        "**Versão do Bot**: " + HBDVBOT.VERSION + "\n" +
+                        "**Versão do Bot**: " + HbdvBot.getVersion() + "\n" +
                             "**Uptime**: " +
                             format("%d:%02d:%02d:%02d", days, hours % 24, minutes % 60, seconds % 60) + "\n" +
                             "**Threads**: " + Thread.activeCount() + "\n" +
@@ -67,7 +69,7 @@ public class InfoCmds {
                         false
                     )
                     .setFooter(
-                        "Comanos durante a Sessão: " + CommandProcessorAndRegistry.getCommandCount(),
+                        "Comandos durante a Sessão: " + CommandProcessorAndRegistry.getCommandCount(),
                         event.getJDA().getSelfUser().getAvatarUrl()
                     )
                     .build()
@@ -76,10 +78,8 @@ public class InfoCmds {
 
             @Override
             public MessageEmbed help(GuildMessageReceivedEvent event) {
-                return helpEmbed(event, "Sobre")
-                    .addField("Descrição:", "Read info about Mantaro!", false)
-                    .addField(
-                        "Information", "!about credits lists everyone who has helped on the bot's development", false)
+                return helpBuilder(event, "Sobre")
+                    .descrição("Informações e Status sobre o Bot.")
                     .build();
             }
         });
@@ -87,26 +87,13 @@ public class InfoCmds {
 
     @Event
     public static void help(CommandRegistry cr) {
-        Random r = new Random();
-        List<String> jokes = Collections.unmodifiableList(Arrays.asList(
-            "Parabéns, você descobriu como usar o comando de ajuda!",
-            "Te ajuda a se ajudar."
-        ));
 
         cr.register("help", new SimpleCommand() {
             @Override
             protected void call(GuildMessageReceivedEvent event, String content, String[] args) {
-                if (content.isEmpty()) {
-                    event.getChannel().sendMessage(
-                        baseEmbed(event, "HybridverseBot Help")
-                            .setColor(Color.orange)
-                            .setDescription(
-                                format("`%s`", join("` `", HBDVBOT.getRegistry().commands().keySet())))
-                            .build()
-                    ).queue();
+                if (!content.isEmpty()) {
 
-                } else {
-                    Command command = HBDVBOT.getRegistry().commands().get(content);
+                    Command command = HbdvBot.getRegistry().commands().get(content);
 
                     if (command != null) {
                         CommandUtils.onHelp(command, event);
@@ -115,20 +102,24 @@ public class InfoCmds {
                             EmoteReference.ERROR + "Não existe nenhum comando com esse nome!"
                         ).queue();
                     }
+                    return;
                 }
+
+                event.getChannel().sendMessage(
+                    baseEmbed(event, "Ajuda do HbdvBot")
+                        .setDescription(
+                            HbdvBot.getRegistry().commands().keySet().stream().collect(Collectors.joining("` `", "`", "`"))
+                        ).build()
+                ).queue();
             }
 
             @Override
             public MessageEmbed help(GuildMessageReceivedEvent event) {
-                return helpEmbed(event, "Comando de Ajuda")
-                    .setColor(Color.orange)
-                    .setDescription("**" + CollectionUtils.random(jokes) + "**")
-                    .addField(
-                        "Uso",
-                        "`~>help` - **Lista os comandos do Bot**.\n" +
-                            "`~>help <command>` - **Ajuda em um comando específico**.",
-                        false
-                    ).build();
+                return helpBuilder(event, "Ajuda")
+                    .descrição("**" + CollectionUtils.random(HELP_JOKES, RANDOM) + "**")
+                    .uso("help", "Lista os comandos do Bot.")
+                    .uso("help <comando>", "Retorna a ajuda de um comando específico.")
+                    .build();
             }
         });
     }
@@ -155,8 +146,8 @@ public class InfoCmds {
 
             @Override
             public MessageEmbed help(GuildMessageReceivedEvent event) {
-                return helpEmbed(event, "Ping Command")
-                    .setDescription("**Plays Ping-Pong with Discord and prints out the result.**")
+                return helpBuilder(event, "Ping")
+                    .descrição("**Brinca de Ping-Pong com o Discord e descobre o delay**.")
                     .build();
             }
         });
@@ -201,9 +192,9 @@ public class InfoCmds {
 
                     //Default
                     event.getChannel().sendMessage(baseEmbed(event, "Command Stats")
-                        .addField("Now", CommandStatsManager.resume(CommandStatsManager.MINUTE_CMDS), false)
-                        .addField("Hourly", CommandStatsManager.resume(CommandStatsManager.HOUR_CMDS), false)
-                        .addField("Daily", CommandStatsManager.resume(CommandStatsManager.DAY_CMDS), false)
+                        .addField("Agora", CommandStatsManager.resume(CommandStatsManager.MINUTE_CMDS), false)
+                        .addField("Nessa Hora", CommandStatsManager.resume(CommandStatsManager.HOUR_CMDS), false)
+                        .addField("Hoje", CommandStatsManager.resume(CommandStatsManager.DAY_CMDS), false)
                         .addField("Total", CommandStatsManager.resume(CommandStatsManager.TOTAL_CMDS), false)
                         .build()
                     ).queue();
@@ -216,7 +207,8 @@ public class InfoCmds {
                         .addField(
                             "Uso de Recursos:",
                             "**Threads**: " + AsyncInfoMonitor.getThreadCount() + "\n" +
-                                "**RAM**: " + (AsyncInfoMonitor.getTotalMemory() - AsyncInfoMonitor.getFreeMemory()) + "MB/" + AsyncInfoMonitor.getMaxMemory() + "MB\n" +
+                                "**RAM**: " + (AsyncInfoMonitor.getTotalMemory() - AsyncInfoMonitor.getFreeMemory()) + "MB/" + AsyncInfoMonitor
+                                .getMaxMemory() + "MB\n" +
                                 "**Memória Alocada**: " + AsyncInfoMonitor.getTotalMemory() + "MB (" + AsyncInfoMonitor.getFreeMemory() + "MB restante)\n" +
                                 "**Uso de CPU**: " + AsyncInfoMonitor.getCpuUsage() + "%\n"
                             , false
@@ -237,7 +229,12 @@ public class InfoCmds {
 
             @Override
             public MessageEmbed help(GuildMessageReceivedEvent event) {
-                return null;
+                return helpBuilder(event, "Stats")
+                    .descrição("Mostra as estatisticas do HbdvBot")
+                    .uso("stats", "Lista as estatísticas da sessão.")
+                    .uso("stats cmds", "Lista o resumo sobre o uso dos comandos.")
+                    .uso("stats cmds <now/hourly/dialy/total>", "Informações detalhadas sobre o uso dos comandos.")
+                    .build();
             }
         });
     }

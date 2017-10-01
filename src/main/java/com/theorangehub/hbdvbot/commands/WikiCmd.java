@@ -1,7 +1,9 @@
 package com.theorangehub.hbdvbot.commands;
 
+import com.rethinkdb.serial.SerialUtils;
 import com.theorangehub.hbdvbot.commands.wiki.EmbedJSON;
 import com.theorangehub.hbdvbot.commands.wiki.EmbedJSON.EmbedField;
+import com.theorangehub.hbdvbot.data.HbdvData;
 import com.theorangehub.hbdvbot.data.entities.WikiArtigo;
 import com.theorangehub.hbdvbot.modules.CommandRegistry;
 import com.theorangehub.hbdvbot.modules.Event;
@@ -9,8 +11,6 @@ import com.theorangehub.hbdvbot.modules.Module;
 import com.theorangehub.hbdvbot.modules.commands.NoArgsCommand;
 import com.theorangehub.hbdvbot.utils.DiscordUtils;
 import com.theorangehub.hbdvbot.utils.commands.EmoteReference;
-import com.rethinkdb.serial.SerialUtils;
-import com.theorangehub.hbdvbot.data.HbdvData;
 import lombok.SneakyThrows;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.MessageEmbed;
@@ -60,7 +60,8 @@ public class WikiCmd {
                     if (i > 6) break;
                 }
 
-                DiscordUtils.selectList(event,
+                DiscordUtils.selectList(
+                    event,
                     artigos.subList(0, i), //TODO CHECK THIS
                     builder.build(),
                     artigo -> handle(event, artigo)
@@ -76,21 +77,6 @@ public class WikiCmd {
                 event.getChannel().sendMessage(
                     unserialize(artigo).decorate(event, baseEmbed(event, "#HBDVRPG Wiki")).build()
                 ).queue();
-            }
-
-            private String pseudoDescription(EmbedJSON embed) {
-                StringJoiner joiner = new StringJoiner("\n").add(nonNull(embed.getDescription()));
-
-                for (EmbedField field : embed.getFields()) {
-                    joiner.add(nonNull(field.getName()));
-                    joiner.add(nonNull(field.getValue()));
-                }
-
-                return joiner.add(nonNull(embed.getFooter())).toString();
-            }
-
-            private String nonNull(String s) {
-                return s == null ? "" : s;
             }
 
             private String near(String string, int index, int size, int range) {
@@ -111,6 +97,29 @@ public class WikiCmd {
                 }
 
                 return s.toString();
+            }
+
+            private String nonNull(String s) {
+                return s == null ? "" : s;
+            }
+
+            private String pseudoDescription(EmbedJSON embed) {
+                StringJoiner joiner = new StringJoiner("\n");
+
+                if (embed.getDescription() != null) {
+                    joiner.add(nonNull(embed.getDescription()));
+                }
+
+                for (EmbedField field : embed.getFields()) {
+                    joiner.add(nonNull(field.getName()));
+                    joiner.add(nonNull(field.getValue()));
+                }
+
+                if (embed.getFooter() != null) {
+                    joiner.add(nonNull(embed.getFooter()));
+                }
+
+                return joiner.toString();
             }
 
             private String searchHighlighting(String content, String desc) {
