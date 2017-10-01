@@ -1,6 +1,6 @@
-package com.theorangehub.deml.reader;
+package com.theorangehub.dml.reader;
 
-public class Utils {
+public class StringBuilderUtils {
     public static void trim(StringBuilder builder) {
         trim(builder, 0, builder.length());
     }

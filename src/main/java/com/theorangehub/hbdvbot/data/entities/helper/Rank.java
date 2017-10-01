@@ -53,7 +53,7 @@ public enum Rank {
 
     GRAO_ESPECIALISTA_2(GRAO_ESPECIALISTA, 2), GRAO_ESPECIALISTA_1(GRAO_ESPECIALISTA, 1),
 
-    O_MAGO(RankCategory.MÁXIMO, 0);
+    O_MAGO(RankCategory.MAXIMO, 0);
 
     public static String display(int lvl) {
         Rank[] values = values();

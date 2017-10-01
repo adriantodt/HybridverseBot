@@ -1,4 +1,4 @@
-package com.theorangehub.deml.reader;
+package com.theorangehub.dml.reader;
 
 import java.awt.Color;
 import java.util.LinkedHashMap;
@@ -45,11 +45,25 @@ public enum DefaultTagResolver implements TagResolver {
             processors.put("embed", processor);
         }
 
+        //<author>
+        {
+            TagProcessor processor = (resolver, builder, tag, input) -> {
+                Map<String, String> attrs = tag.getAttributes();
+                String url = attrs.get("url");
+                String imgUrl = attrs.get("imgUrl");
+
+                String name = defaultProcessor.accept(resolver, builder, tag);
+
+                builder.getEmbed().setAuthor(name, url, imgUrl);
+            };
+            processors.put("author", processor);
+        }
+
         //<description>
         {
             TagProcessor processor = (resolver, builder, tag, input) -> {
                 StringBuilder newBuilder = builder.getEmbed().getDescriptionBuilder();
-                Utils.clear(newBuilder);
+                StringBuilderUtils.clear(newBuilder);
                 defaultProcessor.accept(resolver, builder, tag, newBuilder);
             };
             processors.put("description", processor);

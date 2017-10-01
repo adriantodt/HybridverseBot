@@ -14,23 +14,23 @@
  *  limitations under the License.
  */
 
-package com.theorangehub.deml.parser;
+package com.theorangehub.dml.parser;
 
-import com.theorangehub.deml.SyntaxException;
-import com.theorangehub.deml.lexer.DemlLexer;
-import com.theorangehub.deml.lexer.Token;
-import com.theorangehub.deml.lexer.TokenType;
+import com.theorangehub.dml.SyntaxException;
+import com.theorangehub.dml.lexer.DmlLexer;
+import com.theorangehub.dml.lexer.Token;
+import com.theorangehub.dml.lexer.TokenType;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Parser {
-    private final DemlLexer lexer;
+    private final DmlLexer lexer;
     private final List<Token> tokens;
 
     private Token last;
 
-    public Parser(DemlLexer lexer) {
+    public Parser(DmlLexer lexer) {
         this.lexer = lexer;
         this.tokens = new ArrayList<>();
     }
@@ -43,7 +43,7 @@ public abstract class Parser {
         return tokens;
     }
 
-    public DemlLexer getLexer() {
+    public DmlLexer getLexer() {
         return lexer;
     }
 

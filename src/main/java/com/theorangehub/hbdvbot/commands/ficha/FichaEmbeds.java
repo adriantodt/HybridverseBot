@@ -28,7 +28,7 @@ public class FichaEmbeds {
                 "**Sorte**: " + ficha.getSorte() + "/10\n" +
                 "**Resistência**: " + (ficha.flagManaBased() ? "??" : ficha.getResistência()) + "/10\n" +
                 "**Pontos de Mana**: " + ficha.getMáximoDeMana() + "/500\n" +
-                "**Artes Marciais**: " + ficha.getArtesMarciais() + "/10\n" +
+                "**Técnicas**: " + ficha.getTécnicas() + "/10\n" +
                 "**Inteligência**: " + ficha.getInteligência() + "/10\n" +
                 "**Pontos de Vida**: " + ficha.getPontosDeVida() + "/50"
             , false
@@ -73,18 +73,18 @@ public class FichaEmbeds {
 
     public MessageEmbed carteiraEmbed() {
         return base().addField("Na Carteira",
-            ficha.getCMagnuns() + " **Magnuns**\n" +
-                ficha.getCFiriuns() + " **Firiuns**\n" +
-                ficha.getCNidos() + " **Nidos**\n" +
-                ficha.getCBrigões() + " **Brigões**:\n" +
-                ficha.getCMídios() + " **Mídios**"
+            ficha.getCarteiraMagnuns() + " **Magnuns**\n" +
+                ficha.getCarteiraFiriuns() + " **Firiuns**\n" +
+                ficha.getCarteiraNidos() + " **Nidos**\n" +
+                ficha.getCarteiraBrigões() + " **Brigões**\n" +
+                ficha.getCarteiraMídios() + " **Mídios**"
             , false
         ).addField("No Banco",
-            ficha.getBMagnuns() + " **Magnuns**\n" +
-                ficha.getBFiriuns() + " **Firiuns**\n" +
-                ficha.getBNidos() + " **Nidos**\n" +
-                ficha.getBBrigões() + " **Brigões**:\n" +
-                ficha.getBMídios() + " **Mídios**"
+            ficha.getBancoMagnuns() + " **Magnuns**\n" +
+                ficha.getBancoFiriuns() + " **Firiuns**\n" +
+                ficha.getBancoNidos() + " **Nidos**\n" +
+                ficha.getBancoBrigões() + " **Brigões**\n" +
+                ficha.getBancoMídios() + " **Mídios**"
             , false
         ).addField(
             "Opções:",

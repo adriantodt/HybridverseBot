@@ -20,7 +20,7 @@ plugins {
 mainClassName = "com.theorangehub.hbdvbot.HBDVBOT"
 
 //Use an unified versioning system
-def ver = new Version(major: 1, minor: 11, revision: 0)
+def ver = new Version(major: 1, minor: 12, revision: 0)
 version ver.toString()
 
 //We are going to use Java 8
@@ -80,6 +80,7 @@ prepareSource.dependsOn clearPrepared
 compileJava {
 	source = prepareSource.destinationDir
 	classpath = sourceSets.main.compileClasspath
+	options.encoding = 'UTF-8'
 	dependsOn prepareSource
 }
 

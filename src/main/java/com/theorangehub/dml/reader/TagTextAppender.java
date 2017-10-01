@@ -1,6 +1,6 @@
-package com.theorangehub.deml.reader;
+package com.theorangehub.dml.reader;
 
-import com.theorangehub.deml.Tag;
+import com.theorangehub.dml.Tag;
 
 import java.util.Iterator;
 
@@ -12,7 +12,6 @@ public class TagTextAppender implements TagProcessor {
 
     @Override
     public void accept(TagResolver resolver, Builder builder, Tag tag, StringBuilder input) {
-        boolean first = true;
         for (Iterator<Object> iterator = tag.getChilds().iterator(); iterator.hasNext(); ) {
             Object obj = iterator.next();
 
@@ -22,6 +21,11 @@ public class TagTextAppender implements TagProcessor {
                 resolver.process(builder, (Tag) obj, input);
             } else {
                 input.append(obj == null ? "" : obj.toString());
+            }
+            if (input.length() > 1 && length > 0 && input.length() > length) {
+                if (Character.isWhitespace(input.charAt(length - 1)) && Character.isWhitespace(input.charAt(length))) {
+                    input.deleteCharAt(length);
+                }
             }
         }
     }

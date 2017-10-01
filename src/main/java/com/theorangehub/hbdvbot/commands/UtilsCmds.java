@@ -2,11 +2,11 @@ package com.theorangehub.hbdvbot.commands;
 
 import br.com.brjdevs.java.utils.strings.StringUtils;
 import br.com.brjdevs.java.utils.threads.builder.ThreadBuilder;
-import com.theorangehub.deml.Tag;
-import com.theorangehub.deml.lexer.DemlLexer;
-import com.theorangehub.deml.parser.DemlParser;
-import com.theorangehub.deml.reader.Builder;
-import com.theorangehub.deml.reader.DefaultTagResolver;
+import com.theorangehub.dml.Tag;
+import com.theorangehub.dml.lexer.DmlLexer;
+import com.theorangehub.dml.parser.DmlParser;
+import com.theorangehub.dml.reader.Builder;
+import com.theorangehub.dml.reader.DefaultTagResolver;
 import com.theorangehub.hbdvbot.commands.datas.HbdvCalendars;
 import com.theorangehub.hbdvbot.commands.datas.HbdvDate;
 import com.theorangehub.hbdvbot.commands.findid.AtribGen;
@@ -33,25 +33,6 @@ import java.util.regex.Pattern;
 public class UtilsCmds {
 
     @Event
-    public static void test(CommandRegistry cr) {
-
-        cr.register("test", new NoArgsCommand() {
-
-            @Override
-            public MessageEmbed help(GuildMessageReceivedEvent event) {
-                return null;
-            }
-
-            @Override
-            protected void call(GuildMessageReceivedEvent event, String content) {
-                Builder builder = new Builder();
-                DefaultTagResolver.INSTANCE.process(builder, ((Tag) new DemlParser(new DemlLexer(content)).parse().get(0)));
-                event.getChannel().sendMessage(builder.build()).queue();
-            }
-        });
-    }
-
-    @Event
     public static void datahora(CommandRegistry cr) {
 
         cr.register("data", new SimpleCommand() {
@@ -60,7 +41,7 @@ public class UtilsCmds {
             @Override
             protected void call(GuildMessageReceivedEvent event, String content, String[] args) {
                 try {
-                    String[] partes = StringUtils.splitArgs(args[0], 3);
+                    String[] partes = SPLIT.split(args[0], 3);
 
                     int dia = Integer.parseInt(partes[0]);
                     int mes = Integer.parseInt(partes[1]);
@@ -122,7 +103,7 @@ public class UtilsCmds {
 
         });
         atributos.put("destreza", new AtribGen("Destreza"));
-        atributos.put("artesMarciais", new AtribGen("Artes Marciais"));
+        atributos.put("técnicas", new AtribGen("Técnicas"));
         atributos.put("carisma", new AtribGen("Carisma"));
         atributos.put("inteligência", new AtribGen("Inteligência"));
         atributos.put("sorte", new AtribGen("Sorte"));
@@ -255,6 +236,25 @@ public class UtilsCmds {
             @Override
             public MessageEmbed help(GuildMessageReceivedEvent event) {
                 return null;
+            }
+        });
+    }
+
+    @Event
+    public static void test(CommandRegistry cr) {
+
+        cr.register("test", new NoArgsCommand() {
+
+            @Override
+            public MessageEmbed help(GuildMessageReceivedEvent event) {
+                return null;
+            }
+
+            @Override
+            protected void call(GuildMessageReceivedEvent event, String content) {
+                Builder builder = new Builder();
+                DefaultTagResolver.INSTANCE.process(builder, ((Tag) new DmlParser(new DmlLexer(content)).parse().get(0)));
+                event.getChannel().sendMessage(builder.build()).queue();
             }
         });
     }

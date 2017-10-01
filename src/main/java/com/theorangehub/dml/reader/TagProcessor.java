@@ -1,6 +1,6 @@
-package com.theorangehub.deml.reader;
+package com.theorangehub.dml.reader;
 
-import com.theorangehub.deml.Tag;
+import com.theorangehub.dml.Tag;
 
 public interface TagProcessor {
     default String accept(TagResolver resolver, Builder builder, Tag tag) {

@@ -60,7 +60,7 @@ public enum Atributo {
         }
     },
     //endregion
-    //region Atributos: Resistência/Máximo de Mana/Artes Marciais/Inteligência/Pontos de Vida
+    //region Atributos: Resistência/Máximo de Mana/Técnicas/Inteligência/Pontos de Vida
     resistência {
         @Override
         public void set(Ficha ficha, Number v) {
@@ -83,15 +83,15 @@ public enum Atributo {
             return ficha.getMáximoDeMana();
         }
     },
-    artesMarciais {
+    técnicas {
         @Override
         public void set(Ficha ficha, Number v) {
-            ficha.setArtesMarciais(v.intValue());
+            ficha.setTécnicas(v.intValue());
         }
 
         @Override
         public Integer get(Ficha ficha) {
-            return ficha.getArtesMarciais();
+            return ficha.getTécnicas();
         }
     },
     inteligência {
@@ -278,116 +278,116 @@ public enum Atributo {
     },
     //endregion
     //region Carteira: Magnuns/Firiuns/Nidos/Brigões/Mídios
-    cMagnuns {
+    carteiraMagnuns {
         @Override
         public void set(Ficha ficha, Number v) {
-            ficha.setCMagnuns(v.longValue());
+            ficha.setCarteiraMagnuns(v.longValue());
         }
 
         @Override
         public Long get(Ficha ficha) {
-            return ficha.getCMagnuns();
+            return ficha.getCarteiraMagnuns();
         }
     },
-    cFiriuns {
+    carteiraFiriuns {
         @Override
         public void set(Ficha ficha, Number v) {
-            ficha.setCFiriuns(v.longValue());
+            ficha.setCarteiraFiriuns(v.longValue());
         }
 
         @Override
         public Long get(Ficha ficha) {
-            return ficha.getCFiriuns();
+            return ficha.getCarteiraFiriuns();
         }
     },
-    cNidos{
+    carteiraNidos {
         @Override
         public void set(Ficha ficha, Number v) {
-            ficha.setCNidos(v.longValue());
+            ficha.setCarteiraNidos(v.longValue());
         }
 
         @Override
         public Long get(Ficha ficha) {
-            return ficha.getCNidos();
+            return ficha.getCarteiraNidos();
         }
     },
-    cBrigões {
+    carteiraBrigões {
         @Override
         public void set(Ficha ficha, Number v) {
-            ficha.setCBrigões(v.longValue());
+            ficha.setCarteiraBrigões(v.longValue());
         }
 
         @Override
         public Long get(Ficha ficha) {
-            return ficha.getCBrigões();
+            return ficha.getCarteiraBrigões();
         }
     },
-    cMídios {
+    carteiraMídios {
         @Override
         public void set(Ficha ficha, Number v) {
-            ficha.setCMídios(v.longValue());
+            ficha.setCarteiraMídios(v.longValue());
         }
 
         @Override
         public Long get(Ficha ficha) {
-            return ficha.getCMídios();
+            return ficha.getCarteiraMídios();
         }
     },
     //endregion
     //region Banco: Magnuns/Firiuns/Nidos/Brigões/Mídios
-    bMagnuns {
+    bancoMagnuns {
         @Override
         public void set(Ficha ficha, Number v) {
-            ficha.setBMagnuns(v.longValue());
+            ficha.setBancoMagnuns(v.longValue());
         }
 
         @Override
         public Long get(Ficha ficha) {
-            return ficha.getBMagnuns();
+            return ficha.getBancoMagnuns();
         }
     },
-    bFiriuns {
+    bancoFiriuns {
         @Override
         public void set(Ficha ficha, Number v) {
-            ficha.setCFiriuns(v.longValue());
+            ficha.setCarteiraFiriuns(v.longValue());
         }
 
         @Override
         public Long get(Ficha ficha) {
-            return ficha.getBFiriuns();
+            return ficha.getBancoFiriuns();
         }
     },
-    bNidos{
+    bancoNidos {
         @Override
         public void set(Ficha ficha, Number v) {
-            ficha.setCNidos(v.longValue());
+            ficha.setCarteiraNidos(v.longValue());
         }
 
         @Override
         public Long get(Ficha ficha) {
-            return ficha.getBNidos();
+            return ficha.getBancoNidos();
         }
     },
-    bBrigões {
+    bancoBrigões {
         @Override
         public void set(Ficha ficha, Number v) {
-            ficha.setCBrigões(v.longValue());
+            ficha.setCarteiraBrigões(v.longValue());
         }
 
         @Override
         public Long get(Ficha ficha) {
-            return ficha.getBBrigões();
+            return ficha.getBancoBrigões();
         }
     },
-    bMídios {
+    bancoMídios {
         @Override
         public void set(Ficha ficha, Number v) {
-            ficha.setCMídios(v.longValue());
+            ficha.setCarteiraMídios(v.longValue());
         }
 
         @Override
         public Long get(Ficha ficha) {
-            return ficha.getBMídios();
+            return ficha.getBancoMídios();
         }
     },
     //endregion
@@ -395,12 +395,12 @@ public enum Atributo {
     dinheiro {
         @Override
         public void set(Ficha ficha, Number v) {
-            ficha.setCMagnuns(v.longValue());
+            ficha.setCarteiraMagnuns(v.longValue());
         }
 
         @Override
         public Long get(Ficha ficha) {
-            return ficha.getCMagnuns();
+            return ficha.getCarteiraMagnuns();
         }
     };
     //endregion

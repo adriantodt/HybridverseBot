@@ -1,16 +1,16 @@
 package com.theorangehub.hbdvbot.data.entities;
 
+import com.theorangehub.hbdvbot.data.HbdvData;
 import com.theorangehub.hbdvbot.data.db.ManagedObject;
 import com.theorangehub.hbdvbot.data.entities.helper.FichaConstantes.Flags;
-import com.theorangehub.hbdvbot.data.HbdvData;
 import lombok.Data;
 
 import java.util.LinkedList;
 import java.util.List;
 
+import static com.rethinkdb.RethinkDB.r;
 import static com.theorangehub.hbdvbot.data.db.ManagedDatabase.LOG_WORKER;
 import static com.theorangehub.hbdvbot.data.entities.helper.FichaConstantes.DEFAULT_FLAGS;
-import static com.rethinkdb.RethinkDB.r;
 
 @Data
 public class Ficha implements ManagedObject {
@@ -25,12 +25,12 @@ public class Ficha implements ManagedObject {
     private String cor;
     private String criador, nomeCriador;
     private String dataDeAniversário;
-    private long cMagnuns, cFiriuns, cNidos, cBrigões, cMídios;
-    private long bMagnuns, bFiriuns, bNidos, bBrigões, bMídios;
+    private long bancoMagnuns, bancoFiriuns, bancoNidos, bancoBrigões, bancoMídios;
+    private long carteiraMagnuns, carteiraFiriuns, carteiraNidos, carteiraBrigões, carteiraMídios;
     private List<String> elementosDeAfinidade = new LinkedList<>();
     private String famíliaOuDescendência;
     private int flags = DEFAULT_FLAGS;
-    private int força, resistência, magia, máximoDeMana, destreza, artesMarciais, carisma, inteligência, sorte, pontosDeVida;
+    private int força, resistência, magia, máximoDeMana, destreza, técnicas, carisma, inteligência, sorte, pontosDeVida;
     private String história;
     private String id;
     private int idade;

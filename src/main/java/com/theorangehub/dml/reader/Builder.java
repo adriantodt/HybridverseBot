@@ -1,4 +1,4 @@
-package com.theorangehub.deml.reader;
+package com.theorangehub.dml.reader;
 
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.MessageBuilder;

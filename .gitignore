@@ -48,7 +48,11 @@ local.properties
 config.json
 data.json
 quotes.json
-/logs/
+*.log
+
+#Personal Data
+/queries/
+/rpg/
 
 #RethinkDB
 /db/

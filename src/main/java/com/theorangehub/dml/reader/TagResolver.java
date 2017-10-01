@@ -1,6 +1,6 @@
-package com.theorangehub.deml.reader;
+package com.theorangehub.dml.reader;
 
-import com.theorangehub.deml.Tag;
+import com.theorangehub.dml.Tag;
 
 public interface TagResolver {
     TagProcessor get(String tagName);
@@ -8,7 +8,7 @@ public interface TagResolver {
     TagProcessor defaultProcessor();
 
     default TagProcessor get(Tag tag) {
-        return get(tag.getToken().getString());
+        return get(tag.getName());
     }
 
     default String process(Builder builder, Tag tag) {

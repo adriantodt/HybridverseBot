@@ -1,6 +1,6 @@
-package com.theorangehub.deml.reader;
+package com.theorangehub.dml.reader;
 
-import com.theorangehub.deml.Tag;
+import com.theorangehub.dml.Tag;
 
 public class TagTextDecorator extends TagTextAppender {
     private final boolean optionalPrefix;

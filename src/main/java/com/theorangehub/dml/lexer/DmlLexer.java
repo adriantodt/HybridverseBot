@@ -14,16 +14,16 @@
  *  limitations under the License.
  */
 
-package com.theorangehub.deml.lexer;
+package com.theorangehub.dml.lexer;
 
-import com.theorangehub.deml.SyntaxException;
+import com.theorangehub.dml.SyntaxException;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-public class DemlLexer {
+public class DmlLexer {
     private static final Pattern SPACE_PATTERN = Pattern.compile("\\s+");
     private final Reader reader;
     private final List<Token> tokens;
@@ -37,19 +37,19 @@ public class DemlLexer {
     private long line;
     private char current;
 
-    public DemlLexer(InputStream inputStream) {
+    public DmlLexer(InputStream inputStream) {
         this(new InputStreamReader(inputStream));
     }
 
-    public DemlLexer(String s) {
+    public DmlLexer(String s) {
         this(new StringReader(s));
     }
 
-    public DemlLexer(Reader reader) {
-        this(reader, 2);
+    public DmlLexer(Reader reader) {
+        this(reader, 4);
     }
 
-    public DemlLexer(Reader reader, int historyBuffer) {
+    public DmlLexer(Reader reader, int historyBuffer) {
         this.reader = reader.markSupported() ? reader : new BufferedReader(reader);
         this.eof = false;
         this.tokens = new ArrayList<>();

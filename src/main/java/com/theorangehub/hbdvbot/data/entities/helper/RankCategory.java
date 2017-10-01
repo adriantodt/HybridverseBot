@@ -17,7 +17,7 @@ public enum RankCategory {
     GRAO_MESTRE("Grão Mestre"),
     ESPECIALISTA("Especialista"),
     GRAO_ESPECIALISTA("Grão Especialista"),
-    MÁXIMO("Máximo");
+    MAXIMO("Máximo");
 
     private final String nome;
 

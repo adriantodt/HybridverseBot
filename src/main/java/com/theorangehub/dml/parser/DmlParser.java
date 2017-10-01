@@ -1,16 +1,20 @@
-package com.theorangehub.deml.parser;
+package com.theorangehub.dml.parser;
 
-import com.theorangehub.deml.SyntaxException;
-import com.theorangehub.deml.Tag;
-import com.theorangehub.deml.lexer.DemlLexer;
-import com.theorangehub.deml.lexer.Token;
-import com.theorangehub.deml.lexer.TokenType;
+import com.google.common.collect.Sets;
+import com.theorangehub.dml.SyntaxException;
+import com.theorangehub.dml.Tag;
+import com.theorangehub.dml.lexer.DmlLexer;
+import com.theorangehub.dml.lexer.Token;
+import com.theorangehub.dml.lexer.TokenType;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
-public class DemlParser extends Parser {
-    public DemlParser(DemlLexer lexer) {
+public class DmlParser extends Parser {
+    private final Set<String> SIMPLE_TAGS = Sets.newHashSet("br", "img", "image");
+
+    public DmlParser(DmlLexer lexer) {
         super(lexer);
     }
 
@@ -38,9 +42,48 @@ public class DemlParser extends Parser {
         }
     }
 
+    public List<Object> parse() {
+        List<Object> result = new LinkedList<>();
+
+        while (true) {
+            Object obj = parseOuter(true);
+            if (obj instanceof ClosingTag) {
+                throw new SyntaxException("Unexpected " + obj, ((ClosingTag) obj).getPosition());
+            }
+            if (obj == null) break;
+            result.add(obj);
+        }
+
+        return result;
+    }
+
+    private Object parseOuter(boolean root) {
+        Token t = eat();
+
+        switch (t.getType()) {
+            case TEXT: {
+                return t.getString();
+            }
+
+            case LT: {
+                return parseInner();
+            }
+
+            case EOF: {
+                if (root) return null;
+                throw new SyntaxException("Unexpected " + t, t.getPosition());
+            }
+
+            default: {
+                throw new SyntaxException("Unexpected " + t, t.getPosition());
+            }
+        }
+    }
 
     private Tag parseTag(Token starting) {
         Tag tag = new Tag(starting);
+
+        boolean isSimple = SIMPLE_TAGS.contains(starting.getString());
 
         loop:
         while (true) {
@@ -48,6 +91,7 @@ public class DemlParser extends Parser {
 
             switch (t.getType()) {
                 case GT: {
+                    if (isSimple) return tag;
                     break loop;
                 }
 
@@ -79,8 +123,8 @@ public class DemlParser extends Parser {
             if (child instanceof ClosingTag) {
                 ClosingTag closingTag = (ClosingTag) child;
 
-                if (!closingTag.getToken().getString().equals(tag.getToken().getString())) {
-                    throw new SyntaxException("Unexpected closing tag " + closingTag, closingTag.getToken().getPosition());
+                if (!closingTag.getName().equals(tag.getName())) {
+                    throw new SyntaxException("Unexpected closing tag " + closingTag, closingTag.getPosition());
                 }
 
                 break;
@@ -90,39 +134,5 @@ public class DemlParser extends Parser {
         }
 
         return tag;
-    }
-
-    private Object parseOuter(boolean root) {
-        Token t = eat();
-
-        switch (t.getType()) {
-            case TEXT: {
-                return t.getString();
-            }
-
-            case LT: {
-                return parseInner();
-            }
-
-            case EOF: {
-                if (root) return null;
-            }
-
-            default: {
-                throw new SyntaxException("Unexpected " + t, t.getPosition());
-            }
-        }
-    }
-
-    public List<Object> parse() {
-        List<Object> result = new LinkedList<>();
-
-        while (true) {
-            Object obj = parseOuter(true);
-            if (obj == null) break;
-            result.add(obj);
-        }
-
-        return result;
     }
 }

@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-package com.theorangehub.deml.lexer;
+package com.theorangehub.dml.lexer;
 
 public final class Token {
     private final Position position;
