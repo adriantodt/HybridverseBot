@@ -21,8 +21,6 @@ public class DiscordLogBack extends AppenderBase<ILoggingEvent> {
     private static BlockingQueue<ILoggingEvent> eventQueue = new LinkedBlockingQueue<>();
     private static DiscordLogBack instance;
     private PatternLayout layout;
-
-    private ILoggingEvent previousEvent;
     private Thread thread;
 
     {

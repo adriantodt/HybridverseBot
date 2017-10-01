@@ -1,17 +1,28 @@
 package com.theorangehub.hbdvbot.utils;
 
+import java.util.Arrays;
 import java.util.Comparator;
-import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 public class TimeAmount {
-    public static List<TimeAmount> normalize(List<TimeAmount> list) {
-        TimeUnit unit = list.stream().map(TimeAmount::getUnit)
+    public static TimeAmount[] normalize(TimeAmount... amounts) {
+        TimeUnit unit = Arrays.stream(amounts).map(TimeAmount::getUnit)
             .min(Comparator.naturalOrder()).orElse(TimeUnit.values()[0]);
 
-        return list.stream().map(amount -> amount.convertTo(unit)).collect(Collectors.toList());
+        return Arrays.stream(amounts).map(amount -> amount.convertTo(unit)).toArray(TimeAmount[]::new);
+    }
+
+    public static TimeAmount sum(TimeAmount... amounts) {
+        for (int i = 0; i < amounts.length; i++) {
+            amounts[i] = amounts[i].compress();
+        }
+
+        TimeAmount[] normal = normalize(amounts);
+
+        long sum = Arrays.stream(normal).mapToLong(TimeAmount::getAmount).sum();
+
+        return new TimeAmount(sum, normal[0].getUnit()).compress();
     }
 
     private final long amount;
@@ -24,7 +35,7 @@ public class TimeAmount {
 
     @Override
     public String toString() {
-        return "TimeAmount{" + amount + " " + unit.toString().toLowerCase() + '}';
+        return amount + " " + unit.toString().toLowerCase();
     }
 
     public TimeAmount compress() {

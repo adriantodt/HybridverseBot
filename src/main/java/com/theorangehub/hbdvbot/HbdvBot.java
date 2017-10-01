@@ -1,6 +1,7 @@
 package com.theorangehub.hbdvbot;
 
 import br.com.brjdevs.java.utils.extensions.Async;
+import br.com.brjdevs.java.utils.extensions.CollectionUtils;
 import com.theorangehub.hbdvbot.core.listeners.command.CommandListener;
 import com.theorangehub.hbdvbot.core.listeners.operations.InteractiveOperation;
 import com.theorangehub.hbdvbot.core.listeners.operations.ReactionOperation;
@@ -37,6 +38,8 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 import static br.com.brjdevs.java.utils.extensions.CollectionUtils.random;
+import static com.theorangehub.hbdvbot.HbdvCommons.BOOT_QUOTES;
+import static com.theorangehub.hbdvbot.HbdvCommons.RANDOM;
 
 @Slf4j
 public class HbdvBot implements JDA {
@@ -97,7 +100,7 @@ public class HbdvBot implements JDA {
             .setToken(config.token)
             .setAutoReconnect(true)
             .setCorePoolSize(5)
-            .setGame(Game.of("Abrindo o portão mágico..."))
+            .setGame(Game.of(CollectionUtils.random(BOOT_QUOTES, RANDOM)))
             .buildBlocking();
 
         DiscordLogBack.enable();
@@ -108,7 +111,7 @@ public class HbdvBot implements JDA {
 
         Async.task("Splash Thread",
             () -> {
-                String newStatus = random(SPLASHES.get(), HbdvCommons.RANDOM);
+                String newStatus = random(SPLASHES.get(), RANDOM);
 
                 jda.getPresence().setGame(Game.of(config.prefix + "help | " + newStatus));
                 log.debug("Changed status to: " + newStatus);

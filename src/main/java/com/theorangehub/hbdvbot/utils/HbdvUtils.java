@@ -1,9 +1,12 @@
 package com.theorangehub.hbdvbot.utils;
 
+import com.theorangehub.hbdvbot.HbdvCommons;
 import lombok.extern.slf4j.Slf4j;
-import okhttp3.*;
+import okhttp3.MediaType;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 import org.json.JSONObject;
-import us.monoid.web.Resty;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -12,8 +15,6 @@ import java.util.regex.Pattern;
 @Slf4j
 public class HbdvUtils {
     private static final Pattern regexPattern = Pattern.compile("[\\-\\[\\]/{}()*+?.\\\\^$|]");
-    public static final OkHttpClient httpClient = new OkHttpClient();
-    public static final Resty resty = new Resty().identifyAsMozilla();
 
     public static String escapeRegex(String input) {
         return regexPattern.matcher(input).replaceAll("\\$&");
@@ -30,7 +31,7 @@ public class HbdvUtils {
                 .post(post)
                 .build();
 
-            Response r = httpClient.newCall(toPost).execute();
+            Response r = HbdvCommons.HTTP_CLIENT.newCall(toPost).execute();
             JSONObject response = new JSONObject(r.body().string());
             r.close();
             return "https://hastebin.com/" + response.getString("key");

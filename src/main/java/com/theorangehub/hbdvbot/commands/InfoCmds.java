@@ -229,7 +229,7 @@ public class InfoCmds {
 
             @Override
             public MessageEmbed help(GuildMessageReceivedEvent event) {
-                return helpBuilder(event, "Stats")
+                return helpBuilder(event, "Estatísticas")
                     .descrição("Mostra as estatisticas do HbdvBot")
                     .uso("stats", "Lista as estatísticas da sessão.")
                     .uso("stats cmds", "Lista o resumo sobre o uso dos comandos.")

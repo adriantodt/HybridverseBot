@@ -1,6 +1,7 @@
 package com.theorangehub.hbdvbot.commands;
 
 import com.theorangehub.hbdvbot.commands.ficha.FichaHandler;
+import com.theorangehub.hbdvbot.data.HbdvData;
 import com.theorangehub.hbdvbot.data.entities.Ficha;
 import com.theorangehub.hbdvbot.modules.CommandRegistry;
 import com.theorangehub.hbdvbot.modules.Event;
@@ -9,14 +10,11 @@ import com.theorangehub.hbdvbot.modules.commands.CommandPermission;
 import com.theorangehub.hbdvbot.modules.commands.NoArgsCommand;
 import com.theorangehub.hbdvbot.utils.DiscordUtils;
 import com.theorangehub.hbdvbot.utils.commands.EmoteReference;
-import com.theorangehub.hbdvbot.data.HbdvData;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 
 @Module
 public class FichaCmd {
@@ -26,11 +24,13 @@ public class FichaCmd {
         registry.register("ficha", new NoArgsCommand() {
             @Override
             protected void call(GuildMessageReceivedEvent event, String content) {
+                if (content.isEmpty()) {
+                    onHelp(event);
+                    return;
+                }
+
                 List<Ficha> fichas = HbdvData.db().getFichasPorNome(content);
-                Set<Ficha> sortSet = new TreeSet<>(Comparator.comparing(Ficha::displayToString));
-                sortSet.addAll(fichas);
-                fichas.clear();
-                fichas.addAll(sortSet);
+                fichas.sort(Comparator.comparing(Ficha::displayToString));
 
                 if (fichas.isEmpty()) {
                     event.getChannel().sendMessage(
@@ -55,7 +55,10 @@ public class FichaCmd {
 
             @Override
             public MessageEmbed help(GuildMessageReceivedEvent event) {
-                return null;
+                return helpBuilder(event, "Fichas")
+                    .descrição("Procura e Mostra uma ficha")
+                    .uso("ficha <nome>", "Procura uma ficha com esse nome.")
+                    .build();
             }
         });
     }
@@ -69,7 +72,7 @@ public class FichaCmd {
 
                 if (ficha == null) {
                     event.getChannel().sendMessage(
-                        EmoteReference.ERROR + "Nenhuma Ficha com esse ID"
+                        EmoteReference.ERROR + "Nenhum Log com esse ID"
                     ).queue();
                     return;
                 }
@@ -80,7 +83,10 @@ public class FichaCmd {
 
             @Override
             public MessageEmbed help(GuildMessageReceivedEvent event) {
-                return null;
+                return helpBuilder(event, "Logs de Ficha")
+                    .descrição("Mostra a Ficha em uma versão específica")
+                    .uso("fichalog <id>", "Mostra a ficha dessa versão.")
+                    .build();
             }
         });
     }

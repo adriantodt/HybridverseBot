@@ -31,51 +31,8 @@ import static com.theorangehub.hbdvbot.commands.ficha.FichaEmbeds.defaultColor;
 
 @Module
 public class AtribsCmd {
-    static class Handlers {
-        static void definir(GuildMessageReceivedEvent event, Ficha ficha, Atributo atributo, Number valor) {
-            Number valorAntigo = atributo.get(ficha);
-            atributo.set(ficha, valor);
-            ficha.save();
-            Number valorNovo = atributo.get(ficha);
-
-            event.getChannel().sendMessage(embed(ficha, atributo, valorAntigo, valorNovo, true)).queue();
-        }
-
-        static MessageEmbed embed(Ficha ficha, Atributo atributo, Number valorAntigo, Number valorNovo, boolean definido) {
-            return new EmbedBuilder()
-                .setAuthor(
-                    "Ficha: " + ficha.getNome(),
-                    null,
-                    HbdvBot.getInstance().getSelfUser().getEffectiveAvatarUrl()
-                )
-                .setThumbnail(ficha.getAvatar())
-                .setDescription(
-                    "**Atributo " + HbdvUtils.capitalize(atributo.name()) + " " + (definido ? "definido" : "modificado") + "**\n" +
-                        "**Valor Antigo**: " + valorAntigo + "\n" +
-                        "**Valor Novo**: " + valorNovo
-                )
-                .setColor(ficha.getCor() != null ? Color.decode(ficha.getCor()) : defaultColor)
-                .setFooter(
-                    "ID: " + ficha.getId() + " / Criado por: " + ficha.getNomeCriador(),
-                    Optional.ofNullable(HbdvBot.getInstance().getUserById(ficha.getCriador()))
-                        .map(User::getEffectiveAvatarUrl)
-                        .orElse(null)
-                ).build();
-        }
-
-        static void modificar(GuildMessageReceivedEvent event, Ficha ficha, Atributo atributo, Number offset) {
-            Number valorAntigo = atributo.get(ficha);
-            atributo.set(ficha, valorAntigo.doubleValue() + offset.doubleValue());
-            ficha.save();
-            Number valorNovo = atributo.get(ficha);
-
-            event.getChannel().sendMessage(embed(ficha, atributo, valorAntigo, valorNovo, false)).queue();
-        }
-    }
-
     @Event
     public static void atribs(CommandRegistry registry) {
-
         //atribs <FICHA> <ATRIBUTO> <AÇÃO> [QUANTIA]
         /*
         !atribs David sorte +1
@@ -119,7 +76,7 @@ public class AtribsCmd {
                             DiscordUtils.selectList(event, fichas,
                                 Ficha::displayToString,
                                 s -> baseEmbed(event, "Selecione a Ficha:").setDescription(s).build(),
-                                f -> Handlers.modificar(event, f, atributo, +1)
+                                f -> modificar(event, f, atributo, +1)
                             );
 
                             return;
@@ -128,7 +85,7 @@ public class AtribsCmd {
                         ficha = fichas.get(0);
                     }
 
-                    Handlers.modificar(event, ficha, atributo, +1);
+                    modificar(event, ficha, atributo, +1);
                     return;
                 }
                 //endregion
@@ -152,7 +109,7 @@ public class AtribsCmd {
                             DiscordUtils.selectList(event, fichas,
                                 Ficha::displayToString,
                                 s -> baseEmbed(event, "Selecione a Ficha:").setDescription(s).build(),
-                                f -> Handlers.modificar(event, f, atributo, -1)
+                                f -> modificar(event, f, atributo, -1)
                             );
 
                             return;
@@ -161,7 +118,7 @@ public class AtribsCmd {
                         ficha = fichas.get(0);
                     }
 
-                    Handlers.modificar(event, ficha, atributo, -1);
+                    modificar(event, ficha, atributo, -1);
                     return;
                 }
                 //endregion
@@ -199,7 +156,7 @@ public class AtribsCmd {
                             DiscordUtils.selectList(event, fichas,
                                 Ficha::displayToString,
                                 s -> baseEmbed(event, "Selecione a Ficha:").setDescription(s).build(),
-                                f -> Handlers.modificar(event, f, atributo, amount)
+                                f -> modificar(event, f, atributo, amount)
                             );
 
                             return;
@@ -208,7 +165,7 @@ public class AtribsCmd {
                         ficha = fichas.get(0);
                     }
 
-                    Handlers.modificar(event, ficha, atributo, amount);
+                    modificar(event, ficha, atributo, amount);
                     return;
                 }
                 //endregion
@@ -232,7 +189,7 @@ public class AtribsCmd {
                             DiscordUtils.selectList(event, fichas,
                                 Ficha::displayToString,
                                 s -> baseEmbed(event, "Selecione a Ficha:").setDescription(s).build(),
-                                f -> Handlers.modificar(event, f, atributo, -amount)
+                                f -> modificar(event, f, atributo, -amount)
                             );
 
                             return;
@@ -241,7 +198,7 @@ public class AtribsCmd {
                         ficha = fichas.get(0);
                     }
 
-                    Handlers.modificar(event, ficha, atributo, -amount);
+                    modificar(event, ficha, atributo, -amount);
                     return;
                 }
                 //endregion
@@ -265,7 +222,7 @@ public class AtribsCmd {
                             DiscordUtils.selectList(event, fichas,
                                 Ficha::displayToString,
                                 s -> baseEmbed(event, "Selecione a Ficha:").setDescription(s).build(),
-                                f -> Handlers.definir(event, f, atributo, amount)
+                                f -> definir(event, f, atributo, amount)
                             );
 
                             return;
@@ -274,7 +231,7 @@ public class AtribsCmd {
                         ficha = fichas.get(0);
                     }
 
-                    Handlers.definir(event, ficha, atributo, amount);
+                    definir(event, ficha, atributo, amount);
                     return;
                 }
                 //endregion
@@ -283,6 +240,46 @@ public class AtribsCmd {
             @Override
             public MessageEmbed help(GuildMessageReceivedEvent event) {
                 return null;
+            }
+
+            void definir(GuildMessageReceivedEvent event, Ficha ficha, Atributo atributo, Number valor) {
+                Number valorAntigo = atributo.get(ficha);
+                atributo.set(ficha, valor);
+                ficha.save();
+                Number valorNovo = atributo.get(ficha);
+
+                event.getChannel().sendMessage(embed(ficha, atributo, valorAntigo, valorNovo, true)).queue();
+            }
+
+            MessageEmbed embed(Ficha ficha, Atributo atributo, Number valorAntigo, Number valorNovo, boolean definido) {
+                return new EmbedBuilder()
+                    .setAuthor(
+                        "Ficha: " + ficha.getNome(),
+                        null,
+                        HbdvBot.getInstance().getSelfUser().getEffectiveAvatarUrl()
+                    )
+                    .setThumbnail(ficha.getAvatar())
+                    .setDescription(
+                        "**Atributo " + HbdvUtils.capitalize(atributo.name()) + " " + (definido ? "definido" : "modificado") + "**\n" +
+                            "**Valor Antigo**: " + valorAntigo + "\n" +
+                            "**Valor Novo**: " + valorNovo
+                    )
+                    .setColor(ficha.getCor() != null ? Color.decode(ficha.getCor()) : defaultColor)
+                    .setFooter(
+                        "ID: " + ficha.getId() + " / Criado por: " + ficha.getNomeCriador(),
+                        Optional.ofNullable(HbdvBot.getInstance().getUserById(ficha.getCriador()))
+                            .map(User::getEffectiveAvatarUrl)
+                            .orElse(null)
+                    ).build();
+            }
+
+            void modificar(GuildMessageReceivedEvent event, Ficha ficha, Atributo atributo, Number offset) {
+                Number valorAntigo = atributo.get(ficha);
+                atributo.set(ficha, valorAntigo.doubleValue() + offset.doubleValue());
+                ficha.save();
+                Number valorNovo = atributo.get(ficha);
+
+                event.getChannel().sendMessage(embed(ficha, atributo, valorAntigo, valorNovo, false)).queue();
             }
 
             @Override

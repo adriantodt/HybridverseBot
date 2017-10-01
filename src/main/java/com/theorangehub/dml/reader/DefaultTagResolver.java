@@ -124,6 +124,10 @@ public enum DefaultTagResolver implements TagResolver {
         }
     }
 
+    public Map<String, TagProcessor> getProcessors() {
+        return processors;
+    }
+
     @Override
     public TagProcessor get(String tagName) {
         return processors.getOrDefault(tagName, defaultProcessor);

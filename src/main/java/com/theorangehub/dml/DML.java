@@ -11,14 +11,14 @@ import java.util.List;
 public class DML {
     public static DMLBuilder parse(String text) {
         DMLBuilder builder = new DMLBuilder();
-        parse(builder, new DMLLexer(text), DefaultTagResolver.INSTANCE);
+        process(builder, new DMLLexer(text), DefaultTagResolver.INSTANCE);
         return builder;
     }
 
-    private static void parse(DMLBuilder builder, DMLLexer lexer, TagResolver resolver) {
+    private static void process(DMLBuilder builder, DMLLexer lexer, TagResolver resolver) {
         List<Object> objs = new DMLParser(lexer).parse();
 
-        Tag root = new Tag("root", null);
+        Tag root = new Tag(".root", null);
         root.getChilds().addAll(objs);
 
         resolver.process(builder, root, builder.getMessage().getStringBuilder());

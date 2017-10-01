@@ -3,13 +3,13 @@ package com.theorangehub.hbdvbot.commands;
 import bsh.Interpreter;
 import com.rethinkdb.RethinkDB;
 import com.theorangehub.hbdvbot.HbdvBot;
+import com.theorangehub.hbdvbot.HbdvCommons;
 import com.theorangehub.hbdvbot.data.HbdvData;
 import com.theorangehub.hbdvbot.modules.CommandRegistry;
 import com.theorangehub.hbdvbot.modules.Event;
 import com.theorangehub.hbdvbot.modules.Module;
 import com.theorangehub.hbdvbot.modules.commands.CommandPermission;
 import com.theorangehub.hbdvbot.modules.commands.SimpleCommand;
-import com.theorangehub.hbdvbot.utils.HbdvUtils;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
@@ -22,21 +22,13 @@ import java.util.Map;
 
 import static br.com.brjdevs.java.utils.extensions.CollectionUtils.random;
 import static br.com.brjdevs.java.utils.strings.StringUtils.SPLIT_PATTERN;
+import static com.theorangehub.hbdvbot.HbdvCommons.RANDOM;
 
 @Module
 public class OwnerCommand {
     private interface Evaluator {
         Object eval(GuildMessageReceivedEvent event, String code);
     }
-
-    private static final String[] sleepQuotes = {
-        "*vai dormir*",
-        "*sonha com dragões*",
-        "*guarda as fichas*",
-        "*guarda o diário*",
-        "*coloca os dados no bolso*",
-        "*pega o diário*"
-    };
 
     @Event
     public static void owner(CommandRegistry cr) {
@@ -50,13 +42,12 @@ public class OwnerCommand {
             script.put("guild", event.getGuild());
             script.put("channel", event.getChannel());
             script.put("r", RethinkDB.r);
-            script.put("resty", HbdvUtils.resty);
+            script.put("resty", HbdvCommons.RESTY);
             script.put("conn", HbdvData.conn());
 
             try {
                 return script.eval(String.join(
                     "\n",
-                    "load(\"nashorn:mozilla_compat.js\");",
                     "imports = new JavaImporter(java.util, java.io, java.net);",
                     "(function() {",
                     "with(imports) {",
@@ -79,14 +70,10 @@ public class OwnerCommand {
                 interpreter.set("guild", event.getGuild());
                 interpreter.set("channel", event.getChannel());
                 interpreter.set("r", RethinkDB.r);
-                interpreter.set("resty", HbdvUtils.resty);
+                interpreter.set("resty", HbdvCommons.RESTY);
                 interpreter.set("conn", HbdvData.conn());
 
-                return interpreter.eval(String.join(
-                    "\n",
-                    "import *;",
-                    code
-                ));
+                return interpreter.eval(String.join("\n", "import *;", code));
             } catch (Exception e) {
                 return e;
             }
@@ -104,7 +91,7 @@ public class OwnerCommand {
 
                 if (option.equals("shutdown")) {
                     try {
-                        event.getChannel().sendMessage(random(sleepQuotes)).complete();
+                        event.getChannel().sendMessage(random(HbdvCommons.SLEEP_QUOTES, RANDOM)).complete();
                     } catch (Exception ignored) { }
 
                     System.exit(0);
