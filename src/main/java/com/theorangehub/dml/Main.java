@@ -6,7 +6,7 @@ import net.dv8tion.jda.core.entities.impl.MessageImpl;
 
 public class Main {
     public static void main(String[] args) {
-        Message message = Dml.parse("huh? is that a new HTML in the wild?\n" +
+        Message message = DML.parse("huh? is that a new HTML in the wild?\n" +
             "<embed>\n" +
             "    <author\n" +
             "        url=\"https://adriantodt.theorangehub.com\"\n" +
@@ -17,7 +17,7 @@ public class Main {
             "        Oh hai, how's goin?\n" +
             "    </description>\n" +
             "</embed>\n" +
-            "weeee~");
+            "weeee~").build();
 
         System.out.println(GsonDataManager.GSON_PRETTY.toJson(((MessageImpl) message).toJSONObject().toMap()));
     }

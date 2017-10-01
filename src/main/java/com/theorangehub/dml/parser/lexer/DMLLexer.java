@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-package com.theorangehub.dml.lexer;
+package com.theorangehub.dml.parser.lexer;
 
 import com.theorangehub.dml.SyntaxException;
 
@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-public class DmlLexer {
+public class DMLLexer {
     private static final Pattern SPACE_PATTERN = Pattern.compile("\\s+");
     private final Reader reader;
     private final List<Token> tokens;
@@ -37,19 +37,19 @@ public class DmlLexer {
     private long line;
     private char current;
 
-    public DmlLexer(InputStream inputStream) {
+    public DMLLexer(InputStream inputStream) {
         this(new InputStreamReader(inputStream));
     }
 
-    public DmlLexer(String s) {
+    public DMLLexer(String s) {
         this(new StringReader(s));
     }
 
-    public DmlLexer(Reader reader) {
+    public DMLLexer(Reader reader) {
         this(reader, 4);
     }
 
-    public DmlLexer(Reader reader, int historyBuffer) {
+    public DMLLexer(Reader reader, int historyBuffer) {
         this.reader = reader.markSupported() ? reader : new BufferedReader(reader);
         this.eof = false;
         this.tokens = new ArrayList<>();

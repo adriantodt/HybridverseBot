@@ -1,6 +1,6 @@
 package com.theorangehub.dml;
 
-import com.theorangehub.dml.lexer.Position;
+import com.theorangehub.dml.parser.lexer.Position;
 
 public class SyntaxException extends RuntimeException {
     public SyntaxException(String msg) {

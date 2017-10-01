@@ -3,18 +3,18 @@ package com.theorangehub.dml.parser;
 import com.google.common.collect.Sets;
 import com.theorangehub.dml.SyntaxException;
 import com.theorangehub.dml.Tag;
-import com.theorangehub.dml.lexer.DmlLexer;
-import com.theorangehub.dml.lexer.Token;
-import com.theorangehub.dml.lexer.TokenType;
+import com.theorangehub.dml.parser.lexer.DMLLexer;
+import com.theorangehub.dml.parser.lexer.Token;
+import com.theorangehub.dml.parser.lexer.TokenType;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-public class DmlParser extends Parser {
+public class DMLParser extends Parser {
     private final Set<String> SIMPLE_TAGS = Sets.newHashSet("br", "img", "image");
 
-    public DmlParser(DmlLexer lexer) {
+    public DMLParser(DMLLexer lexer) {
         super(lexer);
     }
 

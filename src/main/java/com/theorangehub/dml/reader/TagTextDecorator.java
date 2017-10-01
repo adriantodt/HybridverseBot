@@ -1,5 +1,6 @@
 package com.theorangehub.dml.reader;
 
+import com.theorangehub.dml.DMLBuilder;
 import com.theorangehub.dml.Tag;
 
 public class TagTextDecorator extends TagTextAppender {
@@ -26,7 +27,7 @@ public class TagTextDecorator extends TagTextAppender {
     }
 
     @Override
-    public void accept(TagResolver resolver, Builder builder, Tag tag, StringBuilder input) {
+    public void accept(TagResolver resolver, DMLBuilder builder, Tag tag, StringBuilder input) {
         StringBuilder buffer = new StringBuilder();
         super.accept(resolver, builder, tag, buffer);
 

@@ -14,8 +14,11 @@
  *  limitations under the License.
  */
 
-package com.theorangehub.dml.lexer;
+package com.theorangehub.dml.parser.lexer;
 
+/**
+ * The possible types of {@link Token}s
+ */
 public enum TokenType {
 
     /** The Character '='. */

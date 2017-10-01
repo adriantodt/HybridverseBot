@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-package com.theorangehub.dml.lexer;
+package com.theorangehub.dml.parser.lexer;
 
 import java.util.Objects;
 

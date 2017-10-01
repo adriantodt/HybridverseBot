@@ -1,7 +1,7 @@
 package com.theorangehub.dml.parser;
 
-import com.theorangehub.dml.lexer.Position;
-import com.theorangehub.dml.lexer.Token;
+import com.theorangehub.dml.parser.lexer.Position;
+import com.theorangehub.dml.parser.lexer.Token;
 import lombok.Data;
 
 @Data

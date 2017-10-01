@@ -2,10 +2,10 @@ package com.theorangehub.hbdvbot.commands;
 
 import br.com.brjdevs.java.utils.strings.StringUtils;
 import br.com.brjdevs.java.utils.threads.builder.ThreadBuilder;
+import com.theorangehub.dml.DMLBuilder;
 import com.theorangehub.dml.Tag;
-import com.theorangehub.dml.lexer.DmlLexer;
-import com.theorangehub.dml.parser.DmlParser;
-import com.theorangehub.dml.reader.Builder;
+import com.theorangehub.dml.parser.DMLParser;
+import com.theorangehub.dml.parser.lexer.DMLLexer;
 import com.theorangehub.dml.reader.DefaultTagResolver;
 import com.theorangehub.hbdvbot.commands.datas.HbdvCalendars;
 import com.theorangehub.hbdvbot.commands.datas.HbdvDate;
@@ -252,8 +252,8 @@ public class UtilsCmds {
 
             @Override
             protected void call(GuildMessageReceivedEvent event, String content) {
-                Builder builder = new Builder();
-                DefaultTagResolver.INSTANCE.process(builder, ((Tag) new DmlParser(new DmlLexer(content)).parse().get(0)));
+                DMLBuilder builder = new DMLBuilder();
+                DefaultTagResolver.INSTANCE.process(builder, ((Tag) new DMLParser(new DMLLexer(content)).parse().get(0)));
                 event.getChannel().sendMessage(builder.build()).queue();
             }
         });

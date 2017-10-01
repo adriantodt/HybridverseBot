@@ -17,20 +17,20 @@
 package com.theorangehub.dml.parser;
 
 import com.theorangehub.dml.SyntaxException;
-import com.theorangehub.dml.lexer.DmlLexer;
-import com.theorangehub.dml.lexer.Token;
-import com.theorangehub.dml.lexer.TokenType;
+import com.theorangehub.dml.parser.lexer.DMLLexer;
+import com.theorangehub.dml.parser.lexer.Token;
+import com.theorangehub.dml.parser.lexer.TokenType;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Parser {
-    private final DmlLexer lexer;
+    private final DMLLexer lexer;
     private final List<Token> tokens;
 
     private Token last;
 
-    public Parser(DmlLexer lexer) {
+    public Parser(DMLLexer lexer) {
         this.lexer = lexer;
         this.tokens = new ArrayList<>();
     }
@@ -43,7 +43,7 @@ public abstract class Parser {
         return tokens;
     }
 
-    public DmlLexer getLexer() {
+    public DMLLexer getLexer() {
         return lexer;
     }
 
