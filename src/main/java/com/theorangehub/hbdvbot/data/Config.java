@@ -10,7 +10,7 @@ import java.util.List;
 @Data
 public class Config {
     public String consoleChannel = "318004158135271425";
-    public String dbDb = "mantaro";
+    public String dbDb = "hbdv";
     public String dbHost = "localhost";
     public String dbPass;
     public int dbPort = 28015;

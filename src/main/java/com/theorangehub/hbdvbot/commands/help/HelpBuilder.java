@@ -11,6 +11,7 @@ import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 
 import java.awt.Color;
+import java.util.LinkedList;
 import java.util.List;
 
 @Accessors(fluent = true)
@@ -21,14 +22,25 @@ public class HelpBuilder {
     private Color cor;
     @Setter
     private String descrição;
-    private List<String> usos;
+    private List<String> usos = new LinkedList<>();
 
     public HelpBuilder(GuildMessageReceivedEvent event, String name, CommandPermission permission) {
         embed = CommandUtils.helpEmbed(event, name, permission);
     }
 
     public MessageEmbed build() {
-        //TODO
+        if (cor != null) embed.setColor(cor);
+        if (descrição != null) {
+            embed.addField("Descrição:", descrição, false);
+        }
+        if (!usos.isEmpty()) {
+            embed.addField(
+                "Usos:",
+                String.join("\n", usos),
+                false
+            );
+        }
+
         return embed.build();
     }
 
