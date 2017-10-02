@@ -4,10 +4,10 @@ import br.com.brjdevs.java.utils.strings.StringUtils;
 import com.theorangehub.hbdvbot.commands.atrib.Atributo;
 import com.theorangehub.hbdvbot.commands.dice.DiceEngine;
 import com.theorangehub.hbdvbot.commands.dice.impl.DiceEngines;
-import com.theorangehub.hbdvbot.data.entities.helper.Const;
-import com.theorangehub.hbdvbot.data.entities.Dados;
 import com.theorangehub.hbdvbot.data.HbdvData;
+import com.theorangehub.hbdvbot.data.entities.Dados;
 import com.theorangehub.hbdvbot.data.entities.Ficha;
+import com.theorangehub.hbdvbot.data.entities.helper.Const;
 import com.theorangehub.hbdvbot.modules.CommandRegistry;
 import com.theorangehub.hbdvbot.modules.Event;
 import com.theorangehub.hbdvbot.modules.Module;
@@ -24,20 +24,22 @@ import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Module
 public class LuckCmds {
+    private static final Pattern DICE = Pattern.compile("\\d+d\\d+");
     public static DiceEngine engine = DiceEngines.RANDOM_MOD;
 
     @Event
     @SuppressWarnings("Duplicates")
     public static void peek(CommandRegistry registry) {
         registry.register("peek", new SimpleCommand(CommandPermission.OWNER) {
+
             @Override
             protected void call(GuildMessageReceivedEvent event, String content, String[] args) {
-                int sides = 20;
                 DiceEngine engine = LuckCmds.engine.peekable();
 
                 TIntList resultados = new TIntLinkedList();
@@ -45,21 +47,32 @@ public class LuckCmds {
                 for (String arg : args) {
                     arg = arg.toLowerCase();
 
-                    if (arg.equalsIgnoreCase("-here")) {
+                    if (arg.equals("-here")) {
                         here = true;
                     }
 
                     if (arg.startsWith("d")) {
                         try {
-                            sides = Math.max(Integer.parseInt(arg.substring(1)), 2);
+                            resultados.add(engine.roll(Math.max(Integer.parseInt(arg.substring(1)), 2)));
                         } catch (Exception ignored) {}
-                    } else if (arg.equals("rolar")) {
-                        resultados.add(engine.roll(sides));
+                    }
+
+                    if (DICE.matcher(arg).matches()) {
+                        try {
+                            int d = arg.indexOf('d');
+
+                            int amount = Integer.parseInt(arg.substring(0, d));
+                            int sides = Math.max(Integer.parseInt(arg.substring(d + 1)), 2);
+
+                            for (int i = 0; i < amount; i++) {
+                                resultados.add(engine.roll(sides));
+                            }
+                        } catch (Exception ignored) {}
                     }
                 }
 
                 if (resultados.isEmpty()) {
-                    resultados.add(engine.roll(sides));
+                    resultados.add(engine.roll(20));
                 }
 
                 (here ? event.getChannel() : event.getAuthor().openPrivateChannel().complete()).sendMessage(
@@ -86,7 +99,6 @@ public class LuckCmds {
         registry.register("dados", new SimpleCommand() {
             @Override
             protected void call(GuildMessageReceivedEvent event, String content, String[] args) {
-                int sides = 20;
                 DiceEngine engine = LuckCmds.engine;
 
                 TIntList resultados = new TIntLinkedList();
@@ -95,15 +107,26 @@ public class LuckCmds {
 
                     if (arg.startsWith("d")) {
                         try {
-                            sides = Math.max(Integer.parseInt(arg.substring(1)), 2);
+                            resultados.add(engine.roll(Math.max(Integer.parseInt(arg.substring(1)), 2)));
                         } catch (Exception ignored) {}
-                    } else if (arg.equals("rolar")) {
-                        resultados.add(engine.roll(sides));
+                    }
+
+                    if (DICE.matcher(arg).matches()) {
+                        try {
+                            int d = arg.indexOf('d');
+
+                            int amount = Integer.parseInt(arg.substring(0, d));
+                            int sides = Math.max(Integer.parseInt(arg.substring(d + 1)), 2);
+
+                            for (int i = 0; i < amount; i++) {
+                                resultados.add(engine.roll(sides));
+                            }
+                        } catch (Exception ignored) {}
                     }
                 }
 
                 if (resultados.isEmpty()) {
-                    resultados.add(engine.roll(sides));
+                    resultados.add(engine.roll(20));
                 }
 
                 event.getChannel().sendMessage(
@@ -129,11 +152,6 @@ public class LuckCmds {
 		!tentar Tatsu sorte set 0
 		*/
         registry.register("tentar", new SimpleCommand() {
-            private boolean equalsIgnoreCaseAny(String v, String... v2) {
-                for (String v1 : v2) if (v.equalsIgnoreCase(v1)) return true;
-                return false;
-            }
-
             private void tentar(GuildMessageReceivedEvent event, Ficha ficha, String action, String[] extraArgs) {
                 Dados dados = HbdvData.db().getDadosPorId(action);
 
@@ -151,12 +169,6 @@ public class LuckCmds {
 
                         if (k == null || v == null) continue;
                         k = k.startsWith("-") ? k.substring(1) : k;
-
-                        //if (equalsIgnoreCaseAny(k, "d", "-d", "dado", "-dado", "dadoinicial", "-dadoinicial", "dadobase", "-dadobase")) {
-                        //    try {
-                        //        dados.setDadoBase(Integer.parseInt(v));
-                        //    } catch (NumberFormatException ignored) {}
-                        //}
 
                         Atributo atributo = null;
 
@@ -194,13 +206,6 @@ public class LuckCmds {
 
                 String selector = args[0], action = args[1];
                 String[] extraArgs = args.length == 2 ? new String[0] : Arrays.copyOfRange(args, 2, args.length);
-
-                Ficha ficha = HbdvData.db().getFichaPorId(selector);
-
-                if (ficha != null) {
-                    tentar(event, ficha, action, extraArgs);
-                    return;
-                }
 
                 List<Ficha> fichas = HbdvData.db().getFichasPorNome(selector);
 

@@ -1,6 +1,6 @@
 package com.theorangehub.hbdvbot.modules.commands.base;
 
-import com.theorangehub.hbdvbot.commands.ficha.FichaEmbeds;
+import com.theorangehub.hbdvbot.HbdvCommons;
 import com.theorangehub.hbdvbot.commands.help.HelpBuilder;
 import com.theorangehub.hbdvbot.utils.CommandUtils;
 import net.dv8tion.jda.core.EmbedBuilder;
@@ -19,7 +19,7 @@ public interface AssistedCommand extends Command {
     }
 
     default HelpBuilder helpBuilder(GuildMessageReceivedEvent event, String name) {
-        return new HelpBuilder(event, name, permission()).cor(FichaEmbeds.defaultColor);
+        return new HelpBuilder(event, name, permission()).cor(HbdvCommons.HBDV_COLOR);
     }
 
     default EmbedBuilder helpEmbed(GuildMessageReceivedEvent event, String name) {

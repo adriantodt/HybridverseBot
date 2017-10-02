@@ -27,7 +27,7 @@ import java.util.Optional;
 import java.util.StringJoiner;
 
 import static com.rethinkdb.RethinkDB.r;
-import static com.theorangehub.hbdvbot.commands.ficha.FichaEmbeds.defaultColor;
+import static com.theorangehub.hbdvbot.HbdvCommons.HBDV_COLOR;
 
 @Module
 public class AtribsCmd {
@@ -59,31 +59,29 @@ public class AtribsCmd {
 
                 //region increment
                 if (action.equals("incrementar") || action.equals("++") || action.equals("+1")) {
-                    Ficha ficha = HbdvData.db().getFichaPorId(selector);
+                    Ficha ficha;
 
-                    if (ficha == null) {
-                        List<Ficha> fichas = HbdvData.db().getFichasPorNome(selector);
+                    List<Ficha> fichas = HbdvData.db().getFichasPorNome(selector);
 
-                        if (fichas.isEmpty()) {
-                            event.getChannel().sendMessage(
-                                EmoteReference.ERROR + "Nenhum Personagem com o Nome/ID de \"" + selector + "\""
-                            ).queue();
+                    if (fichas.isEmpty()) {
+                        event.getChannel().sendMessage(
+                            EmoteReference.ERROR + "Nenhum Personagem com o Nome/ID de \"" + selector + "\""
+                        ).queue();
 
-                            return;
-                        }
-
-                        if (fichas.size() > 1) {
-                            DiscordUtils.selectList(event, fichas,
-                                Ficha::displayToString,
-                                s -> baseEmbed(event, "Selecione a Ficha:").setDescription(s).build(),
-                                f -> modificar(event, f, atributo, +1)
-                            );
-
-                            return;
-                        }
-
-                        ficha = fichas.get(0);
+                        return;
                     }
+
+                    if (fichas.size() > 1) {
+                        DiscordUtils.selectList(event, fichas,
+                            Ficha::displayToString,
+                            s -> baseEmbed(event, "Selecione a Ficha:").setDescription(s).build(),
+                            f -> modificar(event, f, atributo, +1)
+                        );
+
+                        return;
+                    }
+
+                    ficha = fichas.get(0);
 
                     modificar(event, ficha, atributo, +1);
                     return;
@@ -92,31 +90,29 @@ public class AtribsCmd {
 
                 //region decrement
                 if (action.equals("decrementar") || action.equals("--") || action.equals("-1")) {
-                    Ficha ficha = HbdvData.db().getFichaPorId(selector);
+                    Ficha ficha;
 
-                    if (ficha == null) {
-                        List<Ficha> fichas = HbdvData.db().getFichasPorNome(selector);
+                    List<Ficha> fichas = HbdvData.db().getFichasPorNome(selector);
 
-                        if (fichas.isEmpty()) {
-                            event.getChannel().sendMessage(
-                                EmoteReference.ERROR + "Nenhum Personagem com o Nome/ID de \"" + selector + "\""
-                            ).queue();
+                    if (fichas.isEmpty()) {
+                        event.getChannel().sendMessage(
+                            EmoteReference.ERROR + "Nenhum Personagem com o Nome/ID de \"" + selector + "\""
+                        ).queue();
 
-                            return;
-                        }
-
-                        if (fichas.size() > 1) {
-                            DiscordUtils.selectList(event, fichas,
-                                Ficha::displayToString,
-                                s -> baseEmbed(event, "Selecione a Ficha:").setDescription(s).build(),
-                                f -> modificar(event, f, atributo, -1)
-                            );
-
-                            return;
-                        }
-
-                        ficha = fichas.get(0);
+                        return;
                     }
+
+                    if (fichas.size() > 1) {
+                        DiscordUtils.selectList(event, fichas,
+                            Ficha::displayToString,
+                            s -> baseEmbed(event, "Selecione a Ficha:").setDescription(s).build(),
+                            f -> modificar(event, f, atributo, -1)
+                        );
+
+                        return;
+                    }
+
+                    ficha = fichas.get(0);
 
                     modificar(event, ficha, atributo, -1);
                     return;
@@ -139,31 +135,29 @@ public class AtribsCmd {
 
                 //region add
                 if (action.equals("adicionar") || action.equals("+=")) {
-                    Ficha ficha = HbdvData.db().getFichaPorId(selector);
+                    Ficha ficha;
 
-                    if (ficha == null) {
-                        List<Ficha> fichas = HbdvData.db().getFichasPorNome(selector);
+                    List<Ficha> fichas = HbdvData.db().getFichasPorNome(selector);
 
-                        if (fichas.isEmpty()) {
-                            event.getChannel().sendMessage(
-                                EmoteReference.ERROR + "Nenhum Personagem com o Nome/ID de \"" + selector + "\""
-                            ).queue();
+                    if (fichas.isEmpty()) {
+                        event.getChannel().sendMessage(
+                            EmoteReference.ERROR + "Nenhum Personagem com o Nome/ID de \"" + selector + "\""
+                        ).queue();
 
-                            return;
-                        }
-
-                        if (fichas.size() > 1) {
-                            DiscordUtils.selectList(event, fichas,
-                                Ficha::displayToString,
-                                s -> baseEmbed(event, "Selecione a Ficha:").setDescription(s).build(),
-                                f -> modificar(event, f, atributo, amount)
-                            );
-
-                            return;
-                        }
-
-                        ficha = fichas.get(0);
+                        return;
                     }
+
+                    if (fichas.size() > 1) {
+                        DiscordUtils.selectList(event, fichas,
+                            Ficha::displayToString,
+                            s -> baseEmbed(event, "Selecione a Ficha:").setDescription(s).build(),
+                            f -> modificar(event, f, atributo, amount)
+                        );
+
+                        return;
+                    }
+
+                    ficha = fichas.get(0);
 
                     modificar(event, ficha, atributo, amount);
                     return;
@@ -172,31 +166,29 @@ public class AtribsCmd {
 
                 //region subtract
                 if (action.equals("subtrair") || action.equals("-=")) {
-                    Ficha ficha = HbdvData.db().getFichaPorId(selector);
+                    Ficha ficha;
 
-                    if (ficha == null) {
-                        List<Ficha> fichas = HbdvData.db().getFichasPorNome(selector);
+                    List<Ficha> fichas = HbdvData.db().getFichasPorNome(selector);
 
-                        if (fichas.isEmpty()) {
-                            event.getChannel().sendMessage(
-                                EmoteReference.ERROR + "Nenhum Personagem com o Nome/ID de \"" + selector + "\""
-                            ).queue();
+                    if (fichas.isEmpty()) {
+                        event.getChannel().sendMessage(
+                            EmoteReference.ERROR + "Nenhum Personagem com o Nome/ID de \"" + selector + "\""
+                        ).queue();
 
-                            return;
-                        }
-
-                        if (fichas.size() > 1) {
-                            DiscordUtils.selectList(event, fichas,
-                                Ficha::displayToString,
-                                s -> baseEmbed(event, "Selecione a Ficha:").setDescription(s).build(),
-                                f -> modificar(event, f, atributo, -amount)
-                            );
-
-                            return;
-                        }
-
-                        ficha = fichas.get(0);
+                        return;
                     }
+
+                    if (fichas.size() > 1) {
+                        DiscordUtils.selectList(event, fichas,
+                            Ficha::displayToString,
+                            s -> baseEmbed(event, "Selecione a Ficha:").setDescription(s).build(),
+                            f -> modificar(event, f, atributo, -amount)
+                        );
+
+                        return;
+                    }
+
+                    ficha = fichas.get(0);
 
                     modificar(event, ficha, atributo, -amount);
                     return;
@@ -205,31 +197,29 @@ public class AtribsCmd {
 
                 //region set
                 if (action.equals("definir") || action.equals("set") || action.equals("=")) {
-                    Ficha ficha = HbdvData.db().getFichaPorId(selector);
+                    Ficha ficha;
 
-                    if (ficha == null) {
-                        List<Ficha> fichas = HbdvData.db().getFichasPorNome(selector);
+                    List<Ficha> fichas = HbdvData.db().getFichasPorNome(selector);
 
-                        if (fichas.isEmpty()) {
-                            event.getChannel().sendMessage(
-                                EmoteReference.ERROR + "Nenhum Personagem com o Nome/ID de \"" + selector + "\""
-                            ).queue();
+                    if (fichas.isEmpty()) {
+                        event.getChannel().sendMessage(
+                            EmoteReference.ERROR + "Nenhum Personagem com o Nome/ID de \"" + selector + "\""
+                        ).queue();
 
-                            return;
-                        }
-
-                        if (fichas.size() > 1) {
-                            DiscordUtils.selectList(event, fichas,
-                                Ficha::displayToString,
-                                s -> baseEmbed(event, "Selecione a Ficha:").setDescription(s).build(),
-                                f -> definir(event, f, atributo, amount)
-                            );
-
-                            return;
-                        }
-
-                        ficha = fichas.get(0);
+                        return;
                     }
+
+                    if (fichas.size() > 1) {
+                        DiscordUtils.selectList(event, fichas,
+                            Ficha::displayToString,
+                            s -> baseEmbed(event, "Selecione a Ficha:").setDescription(s).build(),
+                            f -> definir(event, f, atributo, amount)
+                        );
+
+                        return;
+                    }
+
+                    ficha = fichas.get(0);
 
                     definir(event, ficha, atributo, amount);
                     return;
@@ -264,7 +254,7 @@ public class AtribsCmd {
                             "**Valor Antigo**: " + valorAntigo + "\n" +
                             "**Valor Novo**: " + valorNovo
                     )
-                    .setColor(ficha.getCor() != null ? Color.decode(ficha.getCor()) : defaultColor)
+                    .setColor(ficha.getCor() != null ? Color.decode(ficha.getCor()) : HBDV_COLOR)
                     .setFooter(
                         "ID: " + ficha.getId() + " / Criado por: " + ficha.getNomeCriador(),
                         Optional.ofNullable(HbdvBot.getInstance().getUserById(ficha.getCriador()))

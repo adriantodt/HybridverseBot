@@ -2,6 +2,7 @@ package com.theorangehub.hbdvbot.commands.info;
 
 import br.com.brjdevs.java.utils.threads.builder.ThreadBuilder;
 import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.entities.MessageEmbed;
 
 import java.util.Comparator;
 import java.util.Map;
@@ -31,12 +32,12 @@ public class CommandStatsManager {
         return builder.append(EMPTY_BLOCK).append('`').toString();
     }
 
-    public static EmbedBuilder fillEmbed(Map<String, AtomicInteger> commands, EmbedBuilder builder) {
+    public static MessageEmbed fillEmbed(EmbedBuilder builder, Map<String, AtomicInteger> commands) {
         int total = commands.values().stream().mapToInt(AtomicInteger::get).sum();
 
         if (total == 0) {
             builder.addField("Nothing Here.", "Just dust.", false);
-            return builder;
+            return builder.build();
         }
 
         commands.entrySet().stream()
@@ -51,7 +52,7 @@ public class CommandStatsManager {
                 );
             });
 
-        return builder;
+        return builder.build();
     }
 
     public static void log(String cmd) {

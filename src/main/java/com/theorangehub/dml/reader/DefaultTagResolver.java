@@ -3,6 +3,7 @@ package com.theorangehub.dml.reader;
 import java.awt.Color;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public enum DefaultTagResolver implements TagResolver {
     INSTANCE;
@@ -59,6 +60,30 @@ public enum DefaultTagResolver implements TagResolver {
             processors.put("author", processor);
         }
 
+        //<img> <image>
+        {
+            TagProcessor processor = (resolver, builder, tag, input) -> {
+                Map<String, String> attrs = tag.getAttributes();
+                String src = attrs.get("src");
+                String type = attrs.getOrDefault("type", "image");
+
+                switch (type) {
+                    case "thumbnail": {
+                        builder.getEmbed().setThumbnail(src);
+                        return;
+                    }
+
+                    case "image":
+                    default: {
+                        builder.getEmbed().setImage(src);
+                    }
+                }
+
+            };
+            processors.put("img", processor);
+            processors.put("image", processor);
+        }
+
         //<description>
         {
             TagProcessor processor = (resolver, builder, tag, input) -> {
@@ -94,6 +119,39 @@ public enum DefaultTagResolver implements TagResolver {
             processors.put("title", processor);
         }
 
+        //<footer>
+        {
+            TagProcessor processor = (resolver, builder, tag, input) -> {
+                Map<String, String> attrs = tag.getAttributes();
+                String imgUrl = attrs.get("imgUrl");
+
+                String text = defaultProcessor.accept(resolver, builder, tag);
+
+                builder.getEmbed().setFooter(text, imgUrl);
+            };
+            processors.put("footer", processor);
+        }
+
+        //<field>
+        {
+            TagProcessor processor = (resolver, builder, tag, input) -> {
+                Map<String, String> attrs = tag.getAttributes();
+
+                boolean inline = !attrs.getOrDefault("inline", "false").equals("false");
+
+                if (!attrs.getOrDefault("blank", "false").equals("false")) {
+                    builder.getEmbed().addBlankField(inline);
+                    return;
+                }
+
+                String title = Objects.requireNonNull(attrs.get("title"), "title");
+                String text = defaultProcessor.accept(resolver, builder, tag);
+
+                builder.getEmbed().addField(title, text, inline);
+            };
+            processors.put("field", processor);
+        }
+
         //<i> <em>
         {
             TagProcessor processor = new TagTextDecorator("*");
@@ -124,10 +182,6 @@ public enum DefaultTagResolver implements TagResolver {
         }
     }
 
-    public Map<String, TagProcessor> getProcessors() {
-        return processors;
-    }
-
     @Override
     public TagProcessor get(String tagName) {
         return processors.getOrDefault(tagName, defaultProcessor);
@@ -136,5 +190,9 @@ public enum DefaultTagResolver implements TagResolver {
     @Override
     public TagProcessor defaultProcessor() {
         return defaultProcessor;
+    }
+
+    public Map<String, TagProcessor> getProcessors() {
+        return processors;
     }
 }

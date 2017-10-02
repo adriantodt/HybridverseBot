@@ -3,6 +3,7 @@ package com.theorangehub.hbdvbot;
 import okhttp3.OkHttpClient;
 import us.monoid.web.Resty;
 
+import java.awt.Color;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -27,4 +28,5 @@ public class HbdvCommons {
         "*coloca os dados no bolso*",
         "*pega o diário*"
     );
+    public static final Color HBDV_COLOR = new Color(0xA600FF);
 }

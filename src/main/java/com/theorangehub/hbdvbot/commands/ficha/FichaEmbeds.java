@@ -1,6 +1,7 @@
 package com.theorangehub.hbdvbot.commands.ficha;
 
 import com.theorangehub.hbdvbot.HbdvBot;
+import com.theorangehub.hbdvbot.HbdvCommons;
 import com.theorangehub.hbdvbot.data.entities.Ficha;
 import com.theorangehub.hbdvbot.data.entities.helper.Rank;
 import com.theorangehub.hbdvbot.data.entities.helper.RankCategory;
@@ -15,7 +16,6 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 public class FichaEmbeds {
-    public static final Color defaultColor = new Color(0xA600FF);
 
     private final Ficha ficha;
 
@@ -62,7 +62,7 @@ public class FichaEmbeds {
                 HbdvBot.getInstance().getSelfUser().getEffectiveAvatarUrl()
             )
             .setThumbnail(ficha.getAvatar())
-            .setColor(ficha.getCor() != null ? Color.decode(ficha.getCor()) : defaultColor)
+            .setColor(ficha.getCor() != null ? Color.decode(ficha.getCor()) : HbdvCommons.HBDV_COLOR)
             .setFooter(
                 "ID: " + ficha.getId() + " / Criado por: " + ficha.getNomeCriador(),
                 Optional.ofNullable(HbdvBot.getInstance().getUserById(ficha.getCriador()))

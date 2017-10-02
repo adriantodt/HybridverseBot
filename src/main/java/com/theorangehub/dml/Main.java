@@ -16,6 +16,7 @@ public class Main {
             "    <description>\n" +
             "        Oh hai, how's goin?\n" +
             "    </description>\n" +
+            "    <field blank inline />\n" +
             "</embed>\n" +
             "weeee~").build();
 

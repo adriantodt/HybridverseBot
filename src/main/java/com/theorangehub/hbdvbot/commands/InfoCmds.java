@@ -160,38 +160,50 @@ public class InfoCmds {
             protected void call(GuildMessageReceivedEvent event, String content, String[] args) {
                 if (args.length > 0 && args[0].equals("cmds")) {
                     if (args.length > 1) {
-                        String what = args[1];
-                        if (what.equals("total")) {
-                            event.getChannel().sendMessage(CommandStatsManager
-                                .fillEmbed(CommandStatsManager.TOTAL_CMDS, baseEmbed(event, "Command Stats | Total"))
-                                .build()).queue();
+                        String arg = args[1];
+                        if (arg.equals("total")) {
+                            event.getChannel().sendMessage(
+                                CommandStatsManager.fillEmbed(
+                                    baseEmbed(event, "Estatísticas de Comandos | Total"),
+                                    CommandStatsManager.TOTAL_CMDS
+                                )
+                            ).queue();
                             return;
                         }
 
-                        if (what.equals("daily")) {
-                            event.getChannel().sendMessage(CommandStatsManager
-                                .fillEmbed(CommandStatsManager.DAY_CMDS, baseEmbed(event, "Command Stats | Daily"))
-                                .build()).queue();
+                        if (arg.equals("daily")) {
+                            event.getChannel().sendMessage(
+                                CommandStatsManager.fillEmbed(
+                                    baseEmbed(event, "Estatísticas de Comandos | Hoje"),
+                                    CommandStatsManager.DAY_CMDS
+                                )
+                            ).queue();
                             return;
                         }
 
-                        if (what.equals("hourly")) {
-                            event.getChannel().sendMessage(CommandStatsManager
-                                .fillEmbed(CommandStatsManager.HOUR_CMDS, baseEmbed(event, "Command Stats | Hourly"))
-                                .build()).queue();
+                        if (arg.equals("hourly")) {
+                            event.getChannel().sendMessage(
+                                CommandStatsManager.fillEmbed(
+                                    baseEmbed(event, "Estatísticas de Comandos | Nessa Hora"),
+                                    CommandStatsManager.HOUR_CMDS
+                                )
+                            ).queue();
                             return;
                         }
 
-                        if (what.equals("now")) {
-                            event.getChannel().sendMessage(CommandStatsManager
-                                .fillEmbed(CommandStatsManager.MINUTE_CMDS, baseEmbed(event, "Command Stats | Now"))
-                                .build()).queue();
+                        if (arg.equals("now")) {
+                            event.getChannel().sendMessage(
+                                CommandStatsManager.fillEmbed(
+                                    baseEmbed(event, "Estatísticas de Comandos | Agora"),
+                                    CommandStatsManager.MINUTE_CMDS
+                                )
+                            ).queue();
                             return;
                         }
                     }
 
                     //Default
-                    event.getChannel().sendMessage(baseEmbed(event, "Command Stats")
+                    event.getChannel().sendMessage(baseEmbed(event, "Estatísticas de Comandos")
                         .addField("Agora", CommandStatsManager.resume(CommandStatsManager.MINUTE_CMDS), false)
                         .addField("Nessa Hora", CommandStatsManager.resume(CommandStatsManager.HOUR_CMDS), false)
                         .addField("Hoje", CommandStatsManager.resume(CommandStatsManager.DAY_CMDS), false)

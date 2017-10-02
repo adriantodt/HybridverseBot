@@ -117,7 +117,7 @@ public class HbdvUtils {
 
     public static String capitalize(String s) {
         if(s.length() == 0) return s;
-        return s.substring(0, 1).toUpperCase() + s.substring(1);
+        return Character.toUpperCase(s.charAt(0)) + s.substring(1);
     }
 
     public static Map<String, String> parse(String[] args) {
