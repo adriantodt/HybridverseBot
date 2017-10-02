@@ -99,7 +99,7 @@ public class Ficha implements ManagedObject {
         return Flags.MORGOTH.is(flags);
     }
 
-    public boolean flagPraga() {
-        return Flags.PRAGA.is(flags);
+    public boolean flagMaldição() {
+        return Flags.MALDICAO.is(flags);
     }
 }

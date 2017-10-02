@@ -2,11 +2,8 @@ package com.theorangehub.hbdvbot.commands;
 
 import br.com.brjdevs.java.utils.strings.StringUtils;
 import br.com.brjdevs.java.utils.threads.builder.ThreadBuilder;
+import com.theorangehub.dml.DML;
 import com.theorangehub.dml.DMLBuilder;
-import com.theorangehub.dml.Tag;
-import com.theorangehub.dml.parser.DMLParser;
-import com.theorangehub.dml.parser.lexer.DMLLexer;
-import com.theorangehub.dml.reader.DefaultTagResolver;
 import com.theorangehub.hbdvbot.commands.calendars.HbdvCalendars;
 import com.theorangehub.hbdvbot.commands.calendars.HbdvDate;
 import com.theorangehub.hbdvbot.commands.findid.AtribGen;
@@ -252,8 +249,16 @@ public class UtilsCmds {
 
             @Override
             protected void call(GuildMessageReceivedEvent event, String content) {
-                DMLBuilder builder = new DMLBuilder();
-                DefaultTagResolver.INSTANCE.process(builder, ((Tag) new DMLParser(new DMLLexer(content)).parse().get(0)));
+                DMLBuilder builder = new DMLBuilder() {
+                    @Override
+                    protected EmbedBuilder newEmbedBuilder() {
+                        return new EmbedBuilder()
+                            .setColor(event.getMember().getColor())
+                            .setFooter("Requerido por " + event.getMember().getEffectiveName(), event.getAuthor().getEffectiveAvatarUrl());
+                    }
+                };
+
+                DML.parse(builder, content);
                 event.getChannel().sendMessage(builder.build()).queue();
             }
         });

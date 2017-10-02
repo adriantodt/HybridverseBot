@@ -10,9 +10,7 @@ import java.util.List;
 
 public class DML {
     public static DMLBuilder parse(String text) {
-        DMLBuilder builder = new DMLBuilder();
-        process(builder, new DMLLexer(text), DefaultTagResolver.INSTANCE);
-        return builder;
+        return parse(new DMLBuilder(), text);
     }
 
     private static void process(DMLBuilder builder, DMLLexer lexer, TagResolver resolver) {
@@ -27,5 +25,10 @@ public class DML {
 
         StringBuilderUtils.trim(builder.getMessage().getStringBuilder());
         StringBuilderUtils.trim(builder.getEmbed().getDescriptionBuilder());
+    }
+
+    public static DMLBuilder parse(DMLBuilder builder, String text) {
+        process(builder, new DMLLexer(text), DefaultTagResolver.INSTANCE);
+        return builder;
     }
 }

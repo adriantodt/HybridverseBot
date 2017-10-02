@@ -14,7 +14,7 @@ public class FichaConstantes {
         /**
          * Indica que o Personagem sofreu a <b>Hybridverse Plague</b>, portanto habilitando a parte de Hybridverse da ficha.
          */
-        PRAGA,
+        MALDICAO,
         /**
          * Indica que o Personagem é <b>Mana-based</b>, como a Nightny, e portanto tem Força e Resistência desconhecidas.
          */
@@ -31,7 +31,7 @@ public class FichaConstantes {
         }
     }
 
-    public static int DEFAULT_FLAGS = 5; //0b101; ADVWORLD | PRAGA
+    public static int DEFAULT_FLAGS = 5; //0b101; ADVWORLD | MALDICAO
 
     public static int flags(Flags... flags) {
         int b = 0;

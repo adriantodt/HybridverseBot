@@ -177,7 +177,7 @@ public class FichaEmbeds {
             );
         }
 
-        if (ficha.flagPraga()) {
+        if (ficha.flagMaldição()) {
             embed.addField("Hybridverse:",
                 "**Amuleto de Afeto**: " + ficha.getAmuletoDeAfeto()
                 , false
