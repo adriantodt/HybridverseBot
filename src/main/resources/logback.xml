@@ -12,7 +12,7 @@
         </encoder>
     </appender>
 
-    <appender name="DISCORD" class="com.theorangehub.hbdvbot.log.DiscordLogBack"/>
+    <appender name="DISCORD" class="com.theorangehub.hbdvbot.utils.DiscordLogBack"/>
 
     <root level="INFO">
         <appender-ref ref="STDOUT"/>

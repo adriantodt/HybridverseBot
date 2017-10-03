@@ -8,10 +8,10 @@ import com.theorangehub.hbdvbot.core.listeners.operations.InteractiveOperation;
 import com.theorangehub.hbdvbot.core.listeners.operations.ReactionOperation;
 import com.theorangehub.hbdvbot.data.Config;
 import com.theorangehub.hbdvbot.data.HbdvData;
-import com.theorangehub.hbdvbot.log.DiscordLogBack;
 import com.theorangehub.hbdvbot.modules.CommandRegistry;
 import com.theorangehub.hbdvbot.modules.events.EventDispatcher;
 import com.theorangehub.hbdvbot.modules.events.PostLoadEvent;
+import com.theorangehub.hbdvbot.utils.DiscordLogBack;
 import com.theorangehub.hbdvbot.utils.data.DataManager;
 import com.theorangehub.hbdvbot.utils.data.SimpleFileDataManager;
 import lombok.Getter;
@@ -75,8 +75,8 @@ public class HbdvBot implements JDA {
         Config config = HbdvData.config().get();
 
         BotInitializer init = new BotInitializer();
-        Async.thread(init::makeCommands);
-        Async.thread(init::makeModules);
+        Async.thread("Command-Loader", init::makeCommands);
+        Async.thread("Module-Loader", init::makeModules);
 
         jda = new JDABuilder(AccountType.BOT)
             .setToken(config.token)
@@ -86,35 +86,24 @@ public class HbdvBot implements JDA {
             .buildBlocking();
 
         DiscordLogBack.enable();
+
         log.info("[-=-=-=-=-=- HBDVBOT INICIADO -=-=-=-=-=-]");
-        log.info("HbdvBot v" + getVersion() + " (JDA " + JDAInfo.VERSION + ") iniciado.");
+        log.info("HbdvBot v" + getVersion() + " (JDA v" + JDAInfo.VERSION + ") iniciado.");
 
-        log.info("[-=-=-=-=-=- INICIALIZAÇÃO  1 -=-=-=-=-=-]");
+        Async.task("Splash Thread", () -> {
+            String newStatus = random(SPLASHES.get(), RANDOM);
 
-        Async.task("Splash Thread",
-            () -> {
-                String newStatus = random(SPLASHES.get(), RANDOM);
-
-                jda.getPresence().setGame(Game.of(config.prefix + "help | " + newStatus));
-                log.debug("Changed status to: " + newStatus);
-            }, 1, TimeUnit.MINUTES
-        );
+            jda.getPresence().setGame(Game.of(config.prefix + "help | " + newStatus));
+            log.debug("Changed status to: " + newStatus);
+        }, 1, TimeUnit.MINUTES);
 
         HbdvData.config().save();
 
         EventDispatcher.dispatchInvocations(init.getCommands(), getRegistry());
         EventDispatcher.dispatchEvents(init.getMethods(), getRegistry());
-
-        log.info("Finalizado.");
-        log.info("[-=-=-=-=-=- INICIALIZAÇÃO  2 -=-=-=-=-=-]");
-
         EventDispatcher.dispatchEvents(init.getMethods(), new PostLoadEvent());
 
-        jda.addEventListener(
-            new CommandListener(),
-            InteractiveOperation.listener(),
-            ReactionOperation.listener()
-        );
+        jda.addEventListener(new CommandListener(), InteractiveOperation.listener(), ReactionOperation.listener());
 
         log.info("Finalizado; {} comandos carregados.", CommandListener.PROCESSOR.commands().size());
 

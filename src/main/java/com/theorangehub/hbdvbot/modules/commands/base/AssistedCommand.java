@@ -1,7 +1,7 @@
 package com.theorangehub.hbdvbot.modules.commands.base;
 
 import com.theorangehub.hbdvbot.HbdvCommons;
-import com.theorangehub.hbdvbot.commands.help.HelpBuilder;
+import com.theorangehub.hbdvbot.commands.info.helpers.HelpBuilder;
 import com.theorangehub.hbdvbot.utils.CommandUtils;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;

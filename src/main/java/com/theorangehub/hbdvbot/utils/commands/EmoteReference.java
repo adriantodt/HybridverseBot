@@ -3,7 +3,6 @@ package com.theorangehub.hbdvbot.utils.commands;
 import java.util.Optional;
 
 public enum EmoteReference {
-
     ERROR(":heavy_multiplication_x:", "\u2716"),
     ERROR2(":x:", "\u274C"),
     DICE(":game_die:", "\uD83C\uDFB2"),
