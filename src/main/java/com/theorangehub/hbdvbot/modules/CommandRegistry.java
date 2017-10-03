@@ -1,11 +1,11 @@
 package com.theorangehub.hbdvbot.modules;
 
-import com.theorangehub.hbdvbot.modules.commands.base.Command;
+import com.theorangehub.hbdvbot.modules.commands.base.ICommand;
 
 import java.util.Map;
 
 public interface CommandRegistry {
-    Map<String, Command> commands();
+    Map<String, ICommand> commands();
 
-    void register(String s, Command c);
+    void register(String s, ICommand c);
 }

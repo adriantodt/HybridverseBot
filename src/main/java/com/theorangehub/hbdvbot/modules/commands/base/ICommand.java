@@ -6,7 +6,7 @@ import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 /**
  * Interface used for handling commands within the bot.
  */
-public interface Command extends SecuredCommandRunnable {
+public interface ICommand extends SecuredCommandRunnable {
 
     /**
      * Embed to be used on help command

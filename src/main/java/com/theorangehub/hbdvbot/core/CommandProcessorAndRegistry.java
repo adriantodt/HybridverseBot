@@ -5,7 +5,7 @@ import com.theorangehub.dml.SyntaxException;
 import com.theorangehub.hbdvbot.commands.info.CommandStatsManager;
 import com.theorangehub.hbdvbot.data.HbdvData;
 import com.theorangehub.hbdvbot.modules.CommandRegistry;
-import com.theorangehub.hbdvbot.modules.commands.base.Command;
+import com.theorangehub.hbdvbot.modules.commands.base.ICommand;
 import com.theorangehub.hbdvbot.utils.Snow64;
 import com.theorangehub.hbdvbot.utils.commands.EmoteReference;
 import lombok.Getter;
@@ -23,15 +23,15 @@ public class CommandProcessorAndRegistry implements CommandRegistry {
     @Getter
     private static int commandCount = 0;
 
-    private final Map<String, Command> commands = new HashMap<>();
+    private final Map<String, ICommand> commands = new HashMap<>();
 
     @Override
-    public Map<String, Command> commands() {
+    public Map<String, ICommand> commands() {
         return commands;
     }
 
     @Override
-    public void register(String s, Command c) {
+    public void register(String s, ICommand c) {
         commands.putIfAbsent(s, c);
     }
 
@@ -46,7 +46,7 @@ public class CommandProcessorAndRegistry implements CommandRegistry {
         String[] parts = splitArgs(rawCmd, 2);
         String cmdName = parts[0], content = parts[1];
 
-        Command cmd = commands.get(cmdName);
+        ICommand cmd = commands.get(cmdName);
         if (cmd == null) return;
 
         if (!cmd.permission().test(event.getMember())) {

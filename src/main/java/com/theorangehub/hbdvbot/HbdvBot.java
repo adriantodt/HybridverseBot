@@ -2,6 +2,7 @@ package com.theorangehub.hbdvbot;
 
 import br.com.brjdevs.java.utils.extensions.Async;
 import br.com.brjdevs.java.utils.extensions.CollectionUtils;
+import com.theorangehub.hbdvbot.core.init.BotInitializer;
 import com.theorangehub.hbdvbot.core.listeners.command.CommandListener;
 import com.theorangehub.hbdvbot.core.listeners.operations.InteractiveOperation;
 import com.theorangehub.hbdvbot.core.listeners.operations.ReactionOperation;
@@ -9,8 +10,6 @@ import com.theorangehub.hbdvbot.data.Config;
 import com.theorangehub.hbdvbot.data.HbdvData;
 import com.theorangehub.hbdvbot.log.DiscordLogBack;
 import com.theorangehub.hbdvbot.modules.CommandRegistry;
-import com.theorangehub.hbdvbot.modules.Event;
-import com.theorangehub.hbdvbot.modules.Module;
 import com.theorangehub.hbdvbot.modules.events.EventDispatcher;
 import com.theorangehub.hbdvbot.modules.events.PostLoadEvent;
 import com.theorangehub.hbdvbot.utils.data.DataManager;
@@ -23,17 +22,10 @@ import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.JDAInfo;
 import net.dv8tion.jda.core.entities.Game;
-import org.reflections.Reflections;
-import org.reflections.scanners.MethodAnnotationsScanner;
-import org.reflections.scanners.SubTypesScanner;
-import org.reflections.scanners.TypeAnnotationsScanner;
 
-import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
-import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 import static br.com.brjdevs.java.utils.extensions.CollectionUtils.random;
@@ -82,15 +74,9 @@ public class HbdvBot implements JDA {
 
         Config config = HbdvData.config().get();
 
-        //Let's see if we find a class.
-        Future<Set<Class<?>>> classes = Async.future("Classes Lookup", () ->
-            new Reflections(
-                "com.theorangehub.hbdvbot.commands",
-                new MethodAnnotationsScanner(),
-                new TypeAnnotationsScanner(),
-                new SubTypesScanner()
-            ).getTypesAnnotatedWith(Module.class)
-        );
+        BotInitializer init = new BotInitializer();
+        Async.thread(init::makeCommands);
+        Async.thread(init::makeModules);
 
         jda = new JDABuilder(AccountType.BOT)
             .setToken(config.token)
@@ -116,17 +102,13 @@ public class HbdvBot implements JDA {
 
         HbdvData.config().save();
 
-        Set<Method> events = new Reflections(
-            classes.get(),
-            new MethodAnnotationsScanner()
-        ).getMethodsAnnotatedWith(Event.class);
-
-        EventDispatcher.dispatch(events, getRegistry());
+        EventDispatcher.dispatchInvocations(init.getCommands(), getRegistry());
+        EventDispatcher.dispatchEvents(init.getMethods(), getRegistry());
 
         log.info("Finalizado.");
         log.info("[-=-=-=-=-=- INICIALIZAÇÃO  2 -=-=-=-=-=-]");
 
-        EventDispatcher.dispatch(events, new PostLoadEvent());
+        EventDispatcher.dispatchEvents(init.getMethods(), new PostLoadEvent());
 
         jda.addEventListener(
             new CommandListener(),

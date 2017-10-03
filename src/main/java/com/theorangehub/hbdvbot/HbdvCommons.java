@@ -17,7 +17,7 @@ public class HbdvCommons {
         "Acordando Dragões..."
     );
 
-    public static final boolean DEV_MODE = Boolean.parseBoolean("@false@".replace("@", ""));
+    public static final boolean DEV_MODE = !Boolean.parseBoolean("@false@".replace("@", ""));
     public static final Random RANDOM = new Random();
     public static final OkHttpClient HTTP_CLIENT = new OkHttpClient();
     public static final Resty RESTY = new Resty().identifyAsMozilla();

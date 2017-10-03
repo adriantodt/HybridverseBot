@@ -7,9 +7,9 @@ import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 
 /**
- * "Assisted" version of the {@link Command} interface, providing some "common ground" for all Commands based on it.
+ * "Assisted" version of the {@link ICommand} interface, providing some "common ground" for all Commands based on it.
  */
-public interface AssistedCommand extends Command {
+public interface AssistedCommand extends ICommand {
     default EmbedBuilder baseEmbed(GuildMessageReceivedEvent event, String name) {
         return CommandUtils.baseEmbed(event, name);
     }

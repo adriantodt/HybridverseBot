@@ -9,7 +9,7 @@ import com.theorangehub.hbdvbot.modules.CommandRegistry;
 import com.theorangehub.hbdvbot.modules.Event;
 import com.theorangehub.hbdvbot.modules.Module;
 import com.theorangehub.hbdvbot.modules.commands.SimpleCommand;
-import com.theorangehub.hbdvbot.modules.commands.base.Command;
+import com.theorangehub.hbdvbot.modules.commands.base.ICommand;
 import com.theorangehub.hbdvbot.modules.events.PostLoadEvent;
 import com.theorangehub.hbdvbot.utils.CommandUtils;
 import com.theorangehub.hbdvbot.utils.commands.EmoteReference;
@@ -93,7 +93,7 @@ public class InfoCmds {
             protected void call(GuildMessageReceivedEvent event, String content, String[] args) {
                 if (!content.isEmpty()) {
 
-                    Command command = HbdvBot.getRegistry().commands().get(content);
+                    ICommand command = HbdvBot.getRegistry().commands().get(content);
 
                     if (command != null) {
                         CommandUtils.onHelp(command, event);

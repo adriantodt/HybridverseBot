@@ -1,7 +1,7 @@
 package com.theorangehub.hbdvbot.utils;
 
 import com.theorangehub.hbdvbot.modules.commands.CommandPermission;
-import com.theorangehub.hbdvbot.modules.commands.base.Command;
+import com.theorangehub.hbdvbot.modules.commands.base.ICommand;
 import com.theorangehub.hbdvbot.utils.commands.EmoteReference;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.MessageEmbed;
@@ -31,7 +31,7 @@ public class CommandUtils {
         for (int i = 0; i < times; i++) runnable.run();
     }
 
-    public static void onHelp(Command command, GuildMessageReceivedEvent event) {
+    public static void onHelp(ICommand command, GuildMessageReceivedEvent event) {
         if (!command.permission().test(event.getMember())) {
             event.getChannel().sendMessage(EmoteReference.STOP + "Você não tem permissão para ver a ajuda desse comando.")
                 .queue(message -> message.delete().queueAfter(30, TimeUnit.SECONDS));
