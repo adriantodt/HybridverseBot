@@ -8,7 +8,6 @@ import com.theorangehub.hbdvbot.core.listeners.operations.ReactionOperation;
 import com.theorangehub.hbdvbot.data.Config;
 import com.theorangehub.hbdvbot.data.HbdvData;
 import com.theorangehub.hbdvbot.log.DiscordLogBack;
-import com.theorangehub.hbdvbot.log.SimpleLogToSLF4JAdapter;
 import com.theorangehub.hbdvbot.modules.CommandRegistry;
 import com.theorangehub.hbdvbot.modules.Event;
 import com.theorangehub.hbdvbot.modules.Module;
@@ -38,8 +37,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 import static br.com.brjdevs.java.utils.extensions.CollectionUtils.random;
-import static com.theorangehub.hbdvbot.HbdvCommons.BOOT_QUOTES;
-import static com.theorangehub.hbdvbot.HbdvCommons.RANDOM;
+import static com.theorangehub.hbdvbot.HbdvCommons.*;
 
 @Slf4j
 public class HbdvBot implements JDA {
@@ -60,7 +58,7 @@ public class HbdvBot implements JDA {
     }
 
     public static boolean isDevBuild() {
-        return Boolean.parseBoolean("@false@".replace("@", ""));
+        return DEV_MODE;
     }
 
     public static void main(String[] args) {
@@ -69,7 +67,7 @@ public class HbdvBot implements JDA {
         } catch (Exception e) {
             DiscordLogBack.disable();
             log.error("Erro durante inicialização!", e);
-            log.error("Não é possível continuar, desligando...");
+            log.error("Não é possível continuar, abortando...");
             System.exit(-1);
         }
     }
@@ -80,8 +78,6 @@ public class HbdvBot implements JDA {
 
     private HbdvBot() throws Exception {
         instance = this;
-
-        SimpleLogToSLF4JAdapter.install();
         log.info("HbdvBot iniciando...");
 
         Config config = HbdvData.config().get();
@@ -127,7 +123,7 @@ public class HbdvBot implements JDA {
 
         EventDispatcher.dispatch(events, getRegistry());
 
-        log.info("Finalizada.");
+        log.info("Finalizado.");
         log.info("[-=-=-=-=-=- INICIALIZAÇÃO  2 -=-=-=-=-=-]");
 
         EventDispatcher.dispatch(events, new PostLoadEvent());
@@ -138,7 +134,7 @@ public class HbdvBot implements JDA {
             ReactionOperation.listener()
         );
 
-        log.info("Finalizada. {} comandos carregados.", CommandListener.PROCESSOR.commands().size());
+        log.info("Finalizado; {} comandos carregados.", CommandListener.PROCESSOR.commands().size());
 
         //Free Instances
         EventDispatcher.instances.clear();

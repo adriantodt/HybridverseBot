@@ -252,7 +252,7 @@ public class UtilsCmds {
                 DMLBuilder builder = new DMLBuilder() {
                     @Override
                     protected EmbedBuilder newEmbedBuilder() {
-                        return new EmbedBuilder()
+                        return super.newEmbedBuilder()
                             .setColor(event.getMember().getColor())
                             .setFooter("Requerido por " + event.getMember().getEffectiveName(), event.getAuthor().getEffectiveAvatarUrl());
                     }

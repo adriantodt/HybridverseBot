@@ -15,7 +15,7 @@ public enum DefaultTagResolver implements TagResolver {
         defaultProcessor = TagTextAppender.INSTANCE;
         processors = new LinkedHashMap<>();
 
-        //<embed>
+        //<page>
         {
             TagProcessor processor = (resolver, builder, tag, input) -> {
                 Map<String, String> attrs = tag.getAttributes();
@@ -43,7 +43,7 @@ public enum DefaultTagResolver implements TagResolver {
                 StringBuilder newBuilder = builder.getEmbed().getDescriptionBuilder();
                 defaultProcessor.accept(resolver, builder, tag, newBuilder);
             };
-            processors.put("embed", processor);
+            processors.put("page", processor);
         }
 
         //<author>
@@ -101,6 +101,20 @@ public enum DefaultTagResolver implements TagResolver {
                 input.append('\n');
             };
             processors.put("p", processor);
+        }
+
+        //<h1> <h2> <h3> <h4> <h5>
+        {
+            TagProcessor processor = (resolver, builder, tag, input) -> {
+                input.append("**");
+                defaultProcessor.accept(resolver, builder, tag, input);
+                input.append("**\n");
+            };
+            processors.put("h1", processor);
+            processors.put("h2", processor);
+            processors.put("h3", processor);
+            processors.put("h4", processor);
+            processors.put("h5", processor);
         }
 
         //<br>

@@ -1,7 +1,7 @@
 package com.theorangehub.hbdvbot.data.entities;
 
-import com.theorangehub.hbdvbot.data.db.ManagedObject;
 import com.theorangehub.hbdvbot.data.HbdvData;
+import com.theorangehub.hbdvbot.data.db.ManagedObject;
 import lombok.Data;
 
 import static com.rethinkdb.RethinkDB.r;
@@ -10,7 +10,7 @@ import static com.rethinkdb.RethinkDB.r;
 public class WikiArtigo implements ManagedObject {
     public static final String DB_TABLE = "wiki";
 
-    private String id, embed;
+    private String id, pageId, page;
 
     @Override
     public void delete() {

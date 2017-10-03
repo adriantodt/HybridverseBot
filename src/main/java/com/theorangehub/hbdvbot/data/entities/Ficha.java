@@ -3,6 +3,7 @@ package com.theorangehub.hbdvbot.data.entities;
 import com.theorangehub.hbdvbot.data.HbdvData;
 import com.theorangehub.hbdvbot.data.db.ManagedObject;
 import com.theorangehub.hbdvbot.data.entities.helper.FichaConstantes.Flags;
+import com.theorangehub.hbdvbot.utils.HbdvUtils;
 import lombok.Data;
 
 import java.util.LinkedList;
@@ -73,14 +74,19 @@ public class Ficha implements ManagedObject {
     }
     //endregion
 
-    public String displayMoradias() {
-        if (moradias.isEmpty()) return "Nenhuma";
-        return "- " + String.join("\n- ", moradias);
+    public String displayInventário() {
+        if (inventário.isEmpty()) return "*Não há nada aqui, só poeira*";
+        return HbdvUtils.indexedToString(inventário);
     }
 
     public String displayRaça() {
         if (raçaSecondária != null) return raçaPrimária + "/" + raçaSecondária;
         return raçaPrimária;
+    }
+
+    public String displayMoradias() {
+        if (moradias.isEmpty()) return "*A rua é sua casa, não?*";
+        return HbdvUtils.indexedToString(moradias);
     }
 
     public String displayToString() {

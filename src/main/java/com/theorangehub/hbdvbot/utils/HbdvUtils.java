@@ -9,7 +9,9 @@ import okhttp3.Response;
 import org.json.JSONObject;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.StringJoiner;
 import java.util.regex.Pattern;
 
 @Slf4j
@@ -41,7 +43,17 @@ public class HbdvUtils {
         }
     }
 
+    public static String indexedToString(List<String> list) {
+        StringJoiner joiner = new StringJoiner("\n");
 
+        int i = 0;
+        for (String item : list) {
+            i++;
+            joiner.add(i + "." + item);
+        }
+
+        return joiner.toString();
+    }
 
     public static String toRoman(int value) {
         if (value < 1 || value > 3999) throw new IllegalArgumentException("Invalid Roman Number");

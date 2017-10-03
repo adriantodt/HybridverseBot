@@ -1,12 +1,13 @@
 package com.theorangehub.hbdvbot.core;
 
+import com.rethinkdb.gen.exc.ReqlError;
+import com.theorangehub.dml.SyntaxException;
 import com.theorangehub.hbdvbot.commands.info.CommandStatsManager;
 import com.theorangehub.hbdvbot.data.HbdvData;
 import com.theorangehub.hbdvbot.modules.CommandRegistry;
 import com.theorangehub.hbdvbot.modules.commands.base.Command;
 import com.theorangehub.hbdvbot.utils.Snow64;
 import com.theorangehub.hbdvbot.utils.commands.EmoteReference;
-import com.rethinkdb.gen.exc.ReqlError;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
@@ -58,11 +59,16 @@ public class CommandProcessorAndRegistry implements CommandRegistry {
 
         try {
             cmd.run(event, cmdName, content);
+        } catch (SyntaxException e) {
+            event.getChannel().sendMessage(
+                EmoteReference.ERROR + "Aparentemente alguma página da Wiki pegou fogo... " + EmoteReference.THINKING
+            ).queue();
+            log.warn("DML TÁ PEGANDO FOGO BIXO.\n", e);
         } catch (ReqlError e) {
             event.getChannel().sendMessage(
                 EmoteReference.ERROR + "Aparentemente nosso banco de dados pegou fogo... " + EmoteReference.THINKING
             ).queue();
-            log.warn("<@217747278071463937> RethinkDB is on fire. Go fix it.", e);
+            log.warn("<@217747278071463937> RethinkDB TÁ PEGANDO FOGO BIXO.\n", e);
         } catch (Exception e) {
             String id = Snow64.toSnow64(event.getMessage().getIdLong());
 

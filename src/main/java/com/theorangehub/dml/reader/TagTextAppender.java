@@ -22,10 +22,11 @@ public class TagTextAppender implements TagProcessor {
                 resolver.process(builder, (Tag) obj, input);
             } else {
                 input.append(obj == null ? "" : obj.toString());
-            }
-            if (input.length() > 1 && length > 0 && input.length() > length) {
-                if (Character.isWhitespace(input.charAt(length - 1)) && Character.isWhitespace(input.charAt(length))) {
-                    input.deleteCharAt(length);
+
+                if (input.length() > 1 && length > 0 && input.length() > length) {
+                    if (Character.isWhitespace(input.charAt(length - 1)) && Character.isWhitespace(input.charAt(length))) {
+                        input.deleteCharAt(length);
+                    }
                 }
             }
         }

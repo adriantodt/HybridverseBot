@@ -19,8 +19,6 @@ public class DML {
         Tag root = new Tag(".root", null);
         root.getChilds().addAll(objs);
 
-        System.out.println(root);
-
         resolver.process(builder, root, builder.getMessage().getStringBuilder());
 
         StringBuilderUtils.trim(builder.getMessage().getStringBuilder());

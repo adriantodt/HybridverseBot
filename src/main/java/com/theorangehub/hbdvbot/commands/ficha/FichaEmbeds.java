@@ -132,17 +132,9 @@ public class FichaEmbeds {
     }
 
     public MessageEmbed miscEmbed() {
-        EmbedBuilder embed = base().addField(
-            "Inventário:",
-            ficha.getInventário().isEmpty() ?
-                "*Não há nada aqui, só poeira*" :
-                "- " + String.join("\n- ", ficha.getInventário())
-            , false
-        ).addField(
-            "Moradias:",
-            ficha.displayMoradias(),
-            false
-        );
+        EmbedBuilder embed = base()
+            .addField("Inventário:", ficha.displayInventário(), false)
+            .addField("Moradias:", ficha.displayMoradias(), false);
 
         if (ficha.getDataDeAniversário() != null && !ficha.getDataDeAniversário().isEmpty()) {
             embed.addField("Data de Aniversário:", ficha.getDataDeAniversário(), false);
