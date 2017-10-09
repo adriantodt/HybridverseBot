@@ -11,8 +11,8 @@ import java.util.function.Supplier;
 
 @Slf4j
 public class GsonDataManager<T> implements DataManager<T> {
-    public static final Gson GSON_PRETTY = new GsonBuilder().setPrettyPrinting().serializeNulls()
-        .create(), GSON_UNPRETTY = new GsonBuilder().serializeNulls().create();
+    public static final Gson GSON_PRETTY = new GsonBuilder().setPrettyPrinting().serializeNulls().disableHtmlEscaping()
+        .create(), GSON_UNPRETTY = new GsonBuilder().serializeNulls().disableHtmlEscaping().create();
 
     public static Gson gson(boolean pretty) {
         return pretty ? GSON_PRETTY : GSON_UNPRETTY;

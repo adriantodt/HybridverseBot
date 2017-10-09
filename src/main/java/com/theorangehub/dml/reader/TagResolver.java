@@ -3,10 +3,14 @@ package com.theorangehub.dml.reader;
 import com.theorangehub.dml.DMLBuilder;
 import com.theorangehub.dml.Tag;
 
-public interface TagResolver {
-    TagProcessor get(String tagName);
+import javax.annotation.Nonnull;
 
+public interface TagResolver {
+    @Nonnull
     TagProcessor defaultProcessor();
+
+    @Nonnull
+    TagProcessor get(String tagName);
 
     default TagProcessor get(Tag tag) {
         return get(tag.getName());

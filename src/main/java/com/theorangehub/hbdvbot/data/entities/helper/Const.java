@@ -1,8 +1,8 @@
 package com.theorangehub.hbdvbot.data.entities.helper;
 
-import com.theorangehub.hbdvbot.commands.ficha.helpers.Atributo;
-import com.theorangehub.hbdvbot.commands.luck.LuckCmds;
-import com.theorangehub.hbdvbot.commands.luck.helpers.Evaluator;
+import com.theorangehub.hbdvbot.commands.LuckCmds;
+import com.theorangehub.hbdvbot.commands.ficha.Atributo;
+import com.theorangehub.hbdvbot.commands.luck.Evaluator;
 import com.theorangehub.hbdvbot.data.entities.Ficha;
 import lombok.Data;
 import lombok.experimental.Accessors;

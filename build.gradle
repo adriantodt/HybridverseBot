@@ -17,10 +17,10 @@ plugins {
 }
 
 //Define the Main Class
-mainClassName = "com.theorangehub.hbdvbot.HBDVBOT"
+mainClassName = "com.theorangehub.hbdvbot.HbdvBot"
 
 //Use an unified versioning system
-def ver = new Version(major: 1, minor: 12, revision: 0)
+def ver = new Version(major: 1, minor: 13, revision: 0)
 version ver.toString()
 
 //We are going to use Java 8
@@ -71,6 +71,9 @@ task clearPrepared(type: Delete) {
 task prepareSource(type: Copy) {
 	from 'src/main/java'
 	into 'build/prepared-src'
+
+	filteringCharset = 'UTF-8'
+
 	filter(ReplaceTokens, tokens: [
 		"false": "true",
 		"version": ver.toString()

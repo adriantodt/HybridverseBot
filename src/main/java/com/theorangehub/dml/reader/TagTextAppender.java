@@ -3,8 +3,6 @@ package com.theorangehub.dml.reader;
 import com.theorangehub.dml.DMLBuilder;
 import com.theorangehub.dml.Tag;
 
-import java.util.Iterator;
-
 public class TagTextAppender implements TagProcessor {
     public static TagTextAppender INSTANCE = new TagTextAppender();
 
@@ -13,9 +11,7 @@ public class TagTextAppender implements TagProcessor {
 
     @Override
     public void accept(TagResolver resolver, DMLBuilder builder, Tag tag, StringBuilder input) {
-        for (Iterator<Object> iterator = tag.getChilds().iterator(); iterator.hasNext(); ) {
-            Object obj = iterator.next();
-
+        for (Object obj : tag.getChilds()) {
             int length = input.length();
 
             if (obj instanceof Tag) {

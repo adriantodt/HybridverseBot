@@ -5,9 +5,13 @@ import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class DMLBuilder {
     private EmbedBuilder embed;
     private MessageBuilder message;
+    private List<DMLReaction> reactions;
 
     public Message build() {
         MessageBuilder message = getMessage();
@@ -54,6 +58,16 @@ public class DMLBuilder {
         return this;
     }
 
+    public List<DMLReaction> getReactions() {
+        if (reactions == null) reactions = newReactions();
+        return reactions;
+    }
+
+    public DMLBuilder setReactions(List<DMLReaction> reactions) {
+        this.reactions = reactions;
+        return this;
+    }
+
     /**
      * Called when the builder needs a EmbedBuilder. Overrride to pre-configure fields.
      *
@@ -70,5 +84,9 @@ public class DMLBuilder {
      */
     protected MessageBuilder newMessageBuilder() {
         return new MessageBuilder();
+    }
+
+    protected List<DMLReaction> newReactions() {
+        return new LinkedList<>();
     }
 }

@@ -6,8 +6,8 @@ import com.theorangehub.hbdvbot.HbdvBot;
 import com.theorangehub.hbdvbot.HbdvCommons;
 import com.theorangehub.hbdvbot.data.HbdvData;
 import com.theorangehub.hbdvbot.modules.Command;
+import com.theorangehub.hbdvbot.modules.commands.ArgsCommand;
 import com.theorangehub.hbdvbot.modules.commands.CommandPermission;
-import com.theorangehub.hbdvbot.modules.commands.SimpleCommand;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
@@ -23,7 +23,7 @@ import static br.com.brjdevs.java.utils.strings.StringUtils.SPLIT_PATTERN;
 import static com.theorangehub.hbdvbot.HbdvCommons.RANDOM;
 
 @Command("owner")
-public class OwnerCmd extends SimpleCommand {
+public class OwnerCmd extends ArgsCommand {
     private interface Evaluator {
         Object eval(GuildMessageReceivedEvent event, String code);
     }

@@ -2,7 +2,7 @@ package com.theorangehub.hbdvbot.core;
 
 import com.rethinkdb.gen.exc.ReqlError;
 import com.theorangehub.dml.SyntaxException;
-import com.theorangehub.hbdvbot.commands.info.helpers.CommandStatsManager;
+import com.theorangehub.hbdvbot.commands.info.CommandStatsManager;
 import com.theorangehub.hbdvbot.data.HbdvData;
 import com.theorangehub.hbdvbot.modules.CommandRegistry;
 import com.theorangehub.hbdvbot.modules.commands.base.ICommand;

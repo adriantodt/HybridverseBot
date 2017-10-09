@@ -1,9 +1,12 @@
 package com.theorangehub.dml.reader;
 
+import com.theorangehub.dml.DMLReaction;
+import com.theorangehub.dml.parser.NoopProcessor;
+
+import javax.annotation.Nonnull;
 import java.awt.Color;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public enum DefaultTagResolver implements TagResolver {
     INSTANCE;
@@ -194,16 +197,65 @@ public enum DefaultTagResolver implements TagResolver {
             };
             processors.put("a", processor);
         }
+
+        //<reactions>
+        {
+            processors.put("reaction", NoopProcessor.INSTANCE);
+
+            Map<String, TagProcessor> reaction = Collections.singletonMap("reaction", (resolver, builder, tag, input) -> {
+                Map<String, String> attrs = tag.getAttributes();
+                String emote = attrs.get("emote");
+                String ref = attrs.get("ref");
+
+                if (emote == null || ref == null) {
+                    return;
+                }
+
+                String text = defaultProcessor.accept(resolver, builder, tag);
+
+                builder.getReactions().add(new DMLReaction(emote, ref, text));
+            });
+
+            TagProcessor processor = (resolver, builder, tag, input) -> {
+                Map<String, String> attrs = tag.getAttributes();
+
+                List<DMLReaction> list = new LinkedList<>();
+                List<DMLReaction> parentList = builder.getReactions();
+
+                builder.setReactions(list);
+                defaultProcessor.accept(
+                    new OverrideTagResolver().setParent(resolver).setNameResolver(reaction::get),
+                    builder, tag, input
+                );
+                builder.setReactions(parentList);
+                parentList.addAll(list);
+
+                if (!attrs.getOrDefault("hidden", "false").equals("false")) return;
+
+                boolean inline = !attrs.getOrDefault("inline", "false").equals("false");
+
+                String name = attrs.getOrDefault("name", "");
+
+                builder.getEmbed().addField(
+                    name,
+                    list.stream().map(Object::toString).collect(Collectors.joining("\n")),
+                    inline
+                );
+            };
+            processors.put("reactions", processor);
+        }
     }
 
-    @Override
-    public TagProcessor get(String tagName) {
-        return processors.getOrDefault(tagName, defaultProcessor);
-    }
-
+    @Nonnull
     @Override
     public TagProcessor defaultProcessor() {
         return defaultProcessor;
+    }
+
+    @Nonnull
+    @Override
+    public TagProcessor get(String tagName) {
+        return processors.getOrDefault(tagName, defaultProcessor);
     }
 
     public Map<String, TagProcessor> getProcessors() {

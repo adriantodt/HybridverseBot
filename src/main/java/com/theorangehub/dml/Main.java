@@ -17,6 +17,10 @@ public class Main {
             "        Oh hai, how's goin?\n" +
             "    </description>\n" +
             "    <field blank inline />\n" +
+            "    <reactions name=\"Memes?\">\n" +
+            "        <reaction ref=\"memes\" emote=\"kek:123\">More memes</reaction>\n" +
+            "        <reaction ref=\"nomemes\" emote=\"nuu:000\">Less memes</reaction>\n" +
+            "    </reactions>\n" +
             "</embed>\n" +
             "weeee~").build();
 

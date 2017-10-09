@@ -28,6 +28,7 @@ public class DiscordUtils {
 
     private static final String[] keys = new String[]{"*", "_", "`", "~~"};
 
+    @Deprecated
     public static <T> Pair<String, Integer> embedList(List<T> list, Function<T, String> toString) {
         StringBuilder b = new StringBuilder();
         for (int i = 0; i < list.size(); i++) {
@@ -60,6 +61,7 @@ public class DiscordUtils {
             .forceCreate();
     }
 
+    @Deprecated
     public static <T> void selectList(GuildMessageReceivedEvent event, List<T> list, Function<T, String> toString, Function<String, MessageEmbed> toEmbed, Consumer<T> valueConsumer) {
         Pair<String, Integer> r = embedList(list, toString);
         Message message = event.getChannel().sendMessage(toEmbed.apply(r.getLeft())).complete();

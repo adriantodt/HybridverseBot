@@ -75,8 +75,18 @@ public class InteractiveOperationBuilder {
         return this;
     }
 
+    public InteractiveOperationBuilder increasingTimeout(TimeAmount amount) {
+        this.increasingTimeout = amount;
+        return this;
+    }
+
     public InteractiveOperationBuilder initialTimeout(long amount, TimeUnit unit) {
         this.initialTimeout = new TimeAmount(amount, unit);
+        return this;
+    }
+
+    public InteractiveOperationBuilder initialTimeout(TimeAmount amount) {
+        this.initialTimeout = amount;
         return this;
     }
 
