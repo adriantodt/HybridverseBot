@@ -19,11 +19,11 @@ import java.util.List;
 @Command("inv")
 public class InvCmd extends FichaBaseCommand {
     public InvCmd() {
-        super(CommandPermission.ADMIN);
+        super(CommandPermission.ADMINISTRADOR);
     }
 
     @Override
-    protected void handle(GuildMessageReceivedEvent event, Ficha ficha, String[] args) {
+    protected void handle(GuildMessageReceivedEvent event, Ficha ficha, String[] args) throws Exception {
         String action = args[0];
         //region clear
         if (action.equals("limpar") || action.equals("clear")) {

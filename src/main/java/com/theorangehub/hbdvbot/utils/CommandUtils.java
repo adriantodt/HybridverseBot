@@ -23,7 +23,7 @@ public class CommandUtils {
 
     public static EmbedBuilder helpEmbed(GuildMessageReceivedEvent event, String name, CommandPermission permission) {
         return baseEmbed(event, name)
-            .setThumbnail("https://cdn.pixabay.com/photo/2012/04/14/16/26/question-34499_960_720.png")
+            .setThumbnail("https://my-dedicated.is-probably-not.online/help.png")
             .addField("Permissão Requerida", permission.toString(), true);
     }
 

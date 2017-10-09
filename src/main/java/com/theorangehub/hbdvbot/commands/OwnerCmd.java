@@ -79,7 +79,7 @@ public class OwnerCmd extends ArgsCommand {
     }
 
     public OwnerCmd() {
-        super(CommandPermission.OWNER);
+        super(CommandPermission.DONO);
     }
 
     @Override

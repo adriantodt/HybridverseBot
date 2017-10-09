@@ -1,5 +1,6 @@
 package com.theorangehub.hbdvbot.core.init;
 
+import com.google.common.collect.Sets;
 import com.theorangehub.hbdvbot.modules.Command;
 import com.theorangehub.hbdvbot.modules.Event;
 import com.theorangehub.hbdvbot.modules.Module;
@@ -32,13 +33,10 @@ public class BotInitializer {
     public void makeCommands() {
         try {
             Reflections r = new Reflections("com.theorangehub.hbdvbot");
-
             reflectionGetter.complete(r);
 
             Set<Class<? extends ICommand>> cmds = r.getSubTypesOf(ICommand.class);
-
             cmds.removeIf(c -> !c.isAnnotationPresent(Command.class));
-
             commandsGetter.complete(cmds);
         } catch (Exception e) {
             reflectionGetter.completeExceptionally(e);
@@ -48,11 +46,13 @@ public class BotInitializer {
 
     public void makeModules() {
         try {
-            Reflections r = reflectionGetter.get();
+            Reflections r = new Reflections(reflectionGetter.get().getTypesAnnotatedWith(Module.class), new MethodAnnotationsScanner());
 
             methodsGetter.complete(
-                new Reflections(r.getTypesAnnotatedWith(Module.class), new MethodAnnotationsScanner())
-                    .getMethodsAnnotatedWith(Event.class)
+                Sets.union(
+                    r.getMethodsAnnotatedWith(Event.class),
+                    r.getMethodsAnnotatedWith(Command.class)
+                )
             );
 
         } catch (Exception e) {

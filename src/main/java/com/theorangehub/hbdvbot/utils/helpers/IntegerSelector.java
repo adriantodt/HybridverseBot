@@ -2,7 +2,6 @@ package com.theorangehub.hbdvbot.utils.helpers;
 
 import com.theorangehub.hbdvbot.core.listeners.operations.InteractiveOperation;
 import com.theorangehub.hbdvbot.utils.TimeAmount;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -10,13 +9,11 @@ import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 
 import java.util.concurrent.*;
 
-@Getter
 @Setter
 @Accessors(fluent = true)
 @RequiredArgsConstructor
 public class IntegerSelector {
     private final GuildMessageReceivedEvent event;
-    private String channelId;
     private TimeAmount increasingTimeout;
     private TimeAmount initialTimeout;
     private int min = 0, max = Integer.MAX_VALUE;
@@ -24,7 +21,7 @@ public class IntegerSelector {
     public Future<Integer> build() {
         CompletableFuture<Integer> result = new CompletableFuture<>();
         InteractiveOperation.builder()
-            .channel(channelId)
+            .channel(event.getChannel().getId())
             .initialTimeout(initialTimeout)
             .increasingTimeout(increasingTimeout)
             .onMessage(e -> {

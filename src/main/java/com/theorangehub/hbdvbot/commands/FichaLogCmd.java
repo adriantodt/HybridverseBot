@@ -13,7 +13,7 @@ import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 @Command("fichalog")
 public class FichaLogCmd extends SimpleCommand {
     public FichaLogCmd() {
-        super(CommandPermission.ADMIN);
+        super(CommandPermission.ADMINISTRADOR);
     }
 
     @Override

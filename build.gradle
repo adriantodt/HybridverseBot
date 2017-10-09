@@ -34,6 +34,7 @@ repositories {
 
 dependencies {
 	compile 'net.dv8tion:JDA:3.3.1_284'
+	//compile 'com.jagrosh:JDA-Utilities:1.8'
 
 	compile 'org.reflections:reflections:0.9.10'
 	compile 'ch.qos.logback:logback-classic:0.9.26'

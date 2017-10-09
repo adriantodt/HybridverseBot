@@ -5,11 +5,13 @@ import com.theorangehub.dml.DMLBuilder;
 import com.theorangehub.hbdvbot.data.HbdvData;
 import com.theorangehub.hbdvbot.data.db.ManagedDatabase;
 import com.theorangehub.hbdvbot.data.entities.WikiArtigo;
+import com.theorangehub.hbdvbot.modules.Command;
 import com.theorangehub.hbdvbot.modules.CommandRegistry;
 import com.theorangehub.hbdvbot.modules.Event;
 import com.theorangehub.hbdvbot.modules.Module;
 import com.theorangehub.hbdvbot.modules.commands.ArgsCommand;
 import com.theorangehub.hbdvbot.modules.commands.SimpleCommand;
+import com.theorangehub.hbdvbot.modules.commands.base.ICommand;
 import com.theorangehub.hbdvbot.utils.DiscordUtils;
 import com.theorangehub.hbdvbot.utils.commands.EmoteReference;
 import net.dv8tion.jda.core.EmbedBuilder;
@@ -29,9 +31,9 @@ import static br.com.brjdevs.java.utils.strings.StringUtils.efficientSplitArgs;
 @SuppressWarnings("Duplicates")
 @Module
 public class WikiCmd {
-    @Event
-    public static void wiki(CommandRegistry registry) {
-        registry.register("wiki", new ArgsCommand() {
+    @Command("wiki")
+    public static ICommand wiki() {
+        return new ArgsCommand() {
             @Override
             protected void call(GuildMessageReceivedEvent event, String content, String[] args) {
                 switch (args[0]) {
@@ -151,12 +153,12 @@ public class WikiCmd {
             protected String[] splitArgs(String content) {
                 return efficientSplitArgs(content, 2);
             }
-        });
+        };
     }
 
-    @Event
-    public static void wikiadd(CommandRegistry registry) {
-        registry.register("wikiadd", new ArgsCommand() {
+    @Command("wikiadd")
+    public static ICommand wikiadd() {
+        return new ArgsCommand() {
             @Override
             protected void call(GuildMessageReceivedEvent event, String content, String[] args) {
                 if (args.length < 2) {
@@ -197,7 +199,7 @@ public class WikiCmd {
             protected String[] splitArgs(String content) {
                 return SPLIT_PATTERN.split(content, 2);
             }
-        });
+        };
     }
 
     @Event

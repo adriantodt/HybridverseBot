@@ -6,20 +6,20 @@ import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Member;
 
 public enum CommandPermission {
-    USER {
+    USUÁRIO {
         @Override
         public boolean test(Member member) {
             return true;
         }
     },
-    ADMIN {
+    ADMINISTRADOR {
         @Override
         public boolean test(Member member) {
             return member.isOwner() || member.hasPermission(Permission.ADMINISTRATOR) ||
-                member.hasPermission(Permission.MANAGE_SERVER) || OWNER.test(member);
+                member.hasPermission(Permission.MANAGE_SERVER) || DONO.test(member);
         }
     },
-    OWNER {
+    DONO {
         @Override
         public boolean test(Member member) {
             return HbdvData.config().get().isOwner(member);

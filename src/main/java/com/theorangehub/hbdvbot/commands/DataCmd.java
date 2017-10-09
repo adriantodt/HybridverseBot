@@ -15,7 +15,7 @@ public class DataCmd extends ArgsCommand {
     private final Pattern SPLIT = Pattern.compile("[-/.]");
 
     @Override
-    protected void call(GuildMessageReceivedEvent event, String content, String[] args) {
+    protected void call(GuildMessageReceivedEvent event, String content, String[] args) throws Exception {
         try {
             String[] partes = SPLIT.split(args[0], 3);
 

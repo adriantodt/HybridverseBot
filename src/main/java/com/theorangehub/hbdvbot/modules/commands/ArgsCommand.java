@@ -13,10 +13,10 @@ public abstract class ArgsCommand extends AbstractCommand {
         super(permission);
     }
 
-    protected abstract void call(GuildMessageReceivedEvent event, String content, String[] args);
+    protected abstract void call(GuildMessageReceivedEvent event, String content, String[] args) throws Exception;
 
     @Override
-    public void run(GuildMessageReceivedEvent event, String commandName, String content) {
+    public void run(GuildMessageReceivedEvent event, String commandName, String content) throws Exception {
         call(event, content, splitArgs(content));
     }
 

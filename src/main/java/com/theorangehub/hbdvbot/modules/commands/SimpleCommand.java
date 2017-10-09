@@ -12,10 +12,10 @@ public abstract class SimpleCommand extends AbstractCommand {
         super(permission);
     }
 
-    protected abstract void call(GuildMessageReceivedEvent event, String content);
+    protected abstract void call(GuildMessageReceivedEvent event, String content) throws Exception;
 
     @Override
-    public void run(GuildMessageReceivedEvent event, String commandName, String content) {
+    public void run(GuildMessageReceivedEvent event, String commandName, String content) throws Exception {
         call(event, content);
     }
 }

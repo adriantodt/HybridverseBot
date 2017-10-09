@@ -26,11 +26,11 @@ import static com.theorangehub.hbdvbot.HbdvCommons.HBDV_COLOR;
 @Command("atribs")
 public class AtribsCmd extends FichaBaseCommand {
     public AtribsCmd() {
-        super(CommandPermission.ADMIN);
+        super(CommandPermission.ADMINISTRADOR);
     }
 
     @Override
-    protected void handle(GuildMessageReceivedEvent event, Ficha ficha, String[] args) {
+    protected void handle(GuildMessageReceivedEvent event, Ficha ficha, String[] args) throws Exception {
         if (args.length < 2) {
             onHelp(event);
             return;

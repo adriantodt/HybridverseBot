@@ -21,13 +21,13 @@ public class Ficha implements ManagedObject {
     private double altura, peso;
     private String amuletoDeAfeto;
     private String avatar;
+    private long bancoMagnuns, bancoFiriuns, bancoNidos, bancoBrigões, bancoMídios;
     private String benção;
+    private long carteiraMagnuns, carteiraFiriuns, carteiraNidos, carteiraBrigões, carteiraMídios;
     private String causaDaPrisão;
     private String cor;
     private String criador, nomeCriador;
     private String dataDeAniversário;
-    private long bancoMagnuns, bancoFiriuns, bancoNidos, bancoBrigões, bancoMídios;
-    private long carteiraMagnuns, carteiraFiriuns, carteiraNidos, carteiraBrigões, carteiraMídios;
     private List<String> elementosDeAfinidade = new LinkedList<>();
     private String famíliaOuDescendência;
     private int flags = DEFAULT_FLAGS;
@@ -79,22 +79,28 @@ public class Ficha implements ManagedObject {
         return HbdvUtils.indexedToString(inventário);
     }
 
-    public String displayRaça() {
-        if (raçaSecondária != null) return raçaPrimária + "/" + raçaSecondária;
-        return raçaPrimária;
-    }
-
     public String displayMoradias() {
         if (moradias.isEmpty()) return "*A rua é sua casa, não?*";
         return HbdvUtils.indexedToString(moradias);
     }
 
-    public String displayToString() {
-        return nome + " (" + idade + " anos; por " + nomeCriador + ")";
+    public String displayRaça() {
+        if (raçaSecondária != null) return raçaPrimária + "/" + raçaSecondária;
+        return raçaPrimária;
+    }
+
+    public String displaySeleção() {
+        return displayRaça() + "; " +
+            idade + " anos; " +
+            "por " + nomeCriador;
     }
 
     public boolean flagAdvWorld() {
         return Flags.ADVWORLD.is(flags);
+    }
+
+    public boolean flagMaldição() {
+        return Flags.MALDICAO.is(flags);
     }
 
     public boolean flagManaBased() {
@@ -103,9 +109,5 @@ public class Ficha implements ManagedObject {
 
     public boolean flagMorgothParty() {
         return Flags.MORGOTH.is(flags);
-    }
-
-    public boolean flagMaldição() {
-        return Flags.MALDICAO.is(flags);
     }
 }

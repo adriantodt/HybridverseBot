@@ -27,7 +27,7 @@ import java.util.stream.IntStream;
 @Command("presets")
 public class PresetsCmd extends FichaBaseCommand {
     @Override
-    protected void handle(GuildMessageReceivedEvent event, Ficha ficha, String[] args) {
+    protected void handle(GuildMessageReceivedEvent event, Ficha ficha, String[] args) throws Exception {
         String action = args[0];
         String[] extraArgs = args.length == 1 ? new String[0] : Arrays.copyOfRange(args, 1, args.length);
 

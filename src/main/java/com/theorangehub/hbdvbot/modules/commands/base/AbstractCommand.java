@@ -6,7 +6,7 @@ public abstract class AbstractCommand implements AssistedCommand {
     private final CommandPermission permission;
 
     public AbstractCommand() {
-        this(CommandPermission.USER);
+        this(CommandPermission.USUÁRIO);
     }
 
     public AbstractCommand(CommandPermission permission) {

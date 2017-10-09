@@ -23,9 +23,8 @@ import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.JDAInfo;
 import net.dv8tion.jda.core.entities.Game;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import static br.com.brjdevs.java.utils.extensions.CollectionUtils.random;
@@ -41,19 +40,13 @@ public class HbdvBot implements JDA {
         return CommandListener.PROCESSOR;
     }
 
-    public static String getVersion() {
-        if (isDevBuild()) {
-            return "DEV" + new SimpleDateFormat("ddMMyyyy").format(new Date());
-        }
-
-        return "@version@";
-    }
-
     public static boolean isDevBuild() {
         return DEV_MODE;
     }
 
     public static void main(String[] args) {
+        Locale.setDefault(new Locale("pt", "BR"));
+
         try {
             new HbdvBot();
         } catch (Exception e) {
@@ -88,7 +81,7 @@ public class HbdvBot implements JDA {
         DiscordLogBack.enable();
 
         log.info("[-=-=-=-=-=- HBDVBOT INICIADO -=-=-=-=-=-]");
-        log.info("HbdvBot v" + getVersion() + " (JDA v" + JDAInfo.VERSION + ") iniciado.");
+        log.info("HbdvBot v" + VERSION + " (JDA v" + JDAInfo.VERSION + ") iniciado.");
 
         Async.task("Splash Thread", () -> {
             String newStatus = random(SPLASHES.get(), RANDOM);
@@ -99,7 +92,8 @@ public class HbdvBot implements JDA {
 
         HbdvData.config().save();
 
-        EventDispatcher.dispatchInvocations(init.getCommands(), getRegistry());
+        EventDispatcher.instantiateCommands(init.getCommands(), getRegistry());
+        EventDispatcher.createCommandsByCalls(init.getMethods(), getRegistry());
         EventDispatcher.dispatchEvents(init.getMethods(), getRegistry());
         EventDispatcher.dispatchEvents(init.getMethods(), new PostLoadEvent());
 

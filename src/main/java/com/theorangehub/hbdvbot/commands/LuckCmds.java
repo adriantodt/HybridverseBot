@@ -25,7 +25,7 @@ public class LuckCmds {
     @Event
     @SuppressWarnings("Duplicates")
     public static void peek(CommandRegistry registry) {
-        registry.register("peek", new ArgsCommand(CommandPermission.OWNER) {
+        registry.register("peek", new ArgsCommand(CommandPermission.DONO) {
 
             @Override
             protected void call(GuildMessageReceivedEvent event, String content, String[] args) {

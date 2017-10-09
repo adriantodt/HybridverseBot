@@ -10,5 +10,5 @@ public interface ICommandRunnable {
      * @param commandName the command name that was used
      * @param content     the arguments of the command
      */
-    void run(GuildMessageReceivedEvent event, String commandName, String content);
+    void run(GuildMessageReceivedEvent event, String commandName, String content) throws Exception;
 }

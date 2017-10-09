@@ -2,6 +2,7 @@ package com.theorangehub.hbdvbot.commands;
 
 import br.com.brjdevs.java.utils.extensions.CollectionUtils;
 import com.theorangehub.hbdvbot.HbdvBot;
+import com.theorangehub.hbdvbot.HbdvCommons;
 import com.theorangehub.hbdvbot.commands.info.AsyncInfoMonitor;
 import com.theorangehub.hbdvbot.commands.info.CommandStatsManager;
 import com.theorangehub.hbdvbot.core.CommandProcessorAndRegistry;
@@ -59,7 +60,7 @@ public class InfoCmds {
                     .setDescription("Bot para Consulta de Informações do #HBDVRPG")
                     .addField(
                         "Informação:",
-                        "**Versão do Bot**: " + HbdvBot.getVersion() + "\n" +
+                        "**Versão do Bot**: " + HbdvCommons.VERSION + "\n" +
                             "**Uptime**: " +
                             format("%d:%02d:%02d:%02d", days, hours % 24, minutes % 60, seconds % 60) + "\n" +
                             "**Threads**: " + Thread.activeCount() + "\n" +

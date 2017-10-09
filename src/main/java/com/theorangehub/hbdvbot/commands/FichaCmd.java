@@ -9,9 +9,8 @@ import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 
 @Command("ficha")
 public class FichaCmd extends FichaBaseCommand {
-
     @Override
-    protected void handle(GuildMessageReceivedEvent event, Ficha ficha, String[] args) {
+    protected void handle(GuildMessageReceivedEvent event, Ficha ficha, String[] args) throws Exception {
         FichaHandler.handleFicha(event, ficha);
     }
 
